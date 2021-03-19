@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="175dp"
+    android:layout_height="175dp"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:id="@+id/activity_poster">
+        </ImageView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_poster"
+                android:id="@+id/activity_name"
+                android:textColor="#000000"
+                android:maxLines="2"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="7dp"
+                android:layout_marginStart="7dp"
+                android:textSize="15sp">
+        </TextView>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/activity_type"
+                android:textSize="11sp"
+                android:layout_below="@+id/activity_name"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="7dp">
+        </TextView>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

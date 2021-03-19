@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:fitsSystemWindows="true"
+              android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/close_register"
+                android:src="@drawable/close">
+        </ImageView>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:text="注册"
+                android:textSize="18sp"
+                android:typeface="sans"
+                android:layout_marginTop="5dp"
+                android:gravity="center">
+        </TextView>
+    </RelativeLayout>
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/choose_register"
+            android:orientation="vertical">
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="参与方用户注册"
+                android:id="@+id/user_register">
+        </RadioButton>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="主办方用户注册"
+                android:id="@+id/sponsor_register">
+        </RadioButton>
+
+    </RadioGroup>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_marginEnd="100dp"
+            android:layout_marginStart="100dp"
+            android:layout_height="wrap_content"
+            android:text="下一步"
+            android:id="@+id/register_next"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:layout_below="@id/choose_register"
+            android:background="@drawable/login_button_shape">
+    </Button>
+
+</RelativeLayout>

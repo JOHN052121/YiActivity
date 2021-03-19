@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="60dp"
+                    android:id="@+id/participant_fragment_top_layout">
+
+        <ImageView android:layout_width="30dp" android:layout_height="30dp"
+                   android:src="@drawable/home_buttoned"
+                   android:layout_marginStart="15dp"
+                   android:layout_marginTop="15dp"
+                   android:id="@+id/participant_fragment_back">
+        </ImageView>
+
+        <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:id="@+id/participant_fragment_title">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:id="@+id/participant_fragment_search"
+            android:layout_below="@+id/participant_fragment_top_layout"
+            android:layout_height="40dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全部"
+                android:id="@+id/participant_fragment_filter_text"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginStart="40dp"
+                android:layout_centerVertical="true">
+        </TextView>
+
+        <EditText
+                android:layout_width="250dp"
+                android:layout_centerInParent="true"
+                android:layout_height="34dp"
+                android:id="@+id/participant_fragment_filter"
+                android:background="@drawable/rounded_edittext"
+                android:hint="请输入手机号/真实姓名"
+                android:layout_toEndOf="@+id/participant_fragment_filter_text"
+                android:layout_marginStart="50dp"
+                android:drawablePadding="16dp"
+                android:singleLine="true"
+                android:drawableStart="@drawable/search"
+                android:paddingStart="10dp"
+                android:textSize="14sp">
+        </EditText>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/participant_fragment_recycle"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/participant_fragment_search">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+    <ImageView android:layout_width="65dp"
+               android:layout_height="65dp"
+               android:id="@+id/top_search_sponsor_item_Image"
+               android:layout_margin="15dp"
+               android:src="@drawable/test3">
+    </ImageView>
+    <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            android:textSize="17sp"
+            android:layout_alignTop="@+id/top_search_sponsor_item_Image"
+            android:id="@+id/top_search_sponsor_item_orgName"
+            android:layout_toEndOf="@+id/top_search_sponsor_item_Image"
+            android:maxLines="1">
+    </TextView>
+
+    <TextView
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="14"
+            android:id="@+id/top_search_sponsor_item_introduce"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/top_search_sponsor_item_orgName"
+            android:layout_alignStart="@+id/top_search_sponsor_item_orgName"
+            android:textColor="#2c2c2c"
+            android:textSize="15sp">
+    </TextView>
+    <View
+            android:layout_width="match_parent"
+            android:background="#dbdbdb"
+            android:layout_height="1px"
+            android:layout_marginTop="24dp"
+            android:layout_below="@+id/top_search_sponsor_item_introduce">
+    </View>
+
+    <Button android:layout_width="65dp" android:layout_height="30dp"
+            android:id="@+id/check_sponsor_detail"
+            android:layout_marginTop="10dp"
+            android:text="查看"
+            android:layout_marginStart="3dp"
+            android:layout_alignTop="@+id/top_search_sponsor_item_orgName"
+            android:layout_toEndOf="@+id/top_search_sponsor_item_introduce"
+            android:stateListAnimator="@null"
+            android:background="@drawable/button_shape_check"
+            android:textSize="12sp">
+    </Button>
+</RelativeLayout>

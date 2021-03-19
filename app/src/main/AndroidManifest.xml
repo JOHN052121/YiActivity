@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.yiactivity">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity android:name=".releaseActivity.TimeChoose">
+        </activity>
+        <activity android:name=".mainScreen.ActivityMyInfo.ThinkedActivity">
+        </activity>
+        <activity android:name=".mainScreen.ActivityMyInfo.SignedActivity">
+        </activity>
+        <activity android:name=".mainScreen.ActivityMyInfo.SigningActivity">
+        </activity>
+        <activity android:name=".mainScreen.ActivityMyInfo.EnrolledActivity">
+        </activity>
+        <activity android:name=".releaseActivity.ContentEdit">
+        </activity>
+        <activity android:name=".releaseActivity.TypeChose">
+        </activity>
+        <activity android:name=".SponsorMain.ParticipantDetail">
+        </activity>
+        <activity android:name=".mainScreen.typeActivity.diffTypeActivity">
+        </activity>
+        <activity android:name=".releaseActivity.ReleaseActivities">
+        </activity>
+        <activity android:name=".SponsorMain.MangerActivityInDetail">
+        </activity>
+        <activity android:name=".SponsorMain.SponsorMainScreen">
+        </activity>
+        <activity android:name=".detailOfSponsor.SponsorDetail">
+        </activity>
+        <activity android:name=".searchTopActivity.ShowSearchActivity">
+        </activity>
+        <activity android:name=".searchTopActivity.SearchActivity">
+        </activity>
+        <activity android:name=".detailOfActivity.ActivityDetail">
+        </activity>
+        <activity android:name=".register.sponsorRegister">
+        </activity>
+        <activity android:name=".register.userRegister">
+        </activity>
+        <activity android:name=".register.registerActivity">
+        </activity>
+        <activity android:name=".login.loginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".mainScreen.MainActivity">
+        </activity>
+    </application>
+
+</manifest>

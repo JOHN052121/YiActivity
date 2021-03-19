@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/time_choose_topLayout">
+        <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/back_icon"
+                android:id="@+id/time_choose_back"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="10dp">
+        </ImageView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您的活动时间是什么时候？"
+                android:layout_centerInParent="true"
+                android:textSize="19sp"
+                android:textColor="#000000">
+        </TextView>
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/time_choose_topLayout"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="6dp"
+            app:cardBackgroundColor="#ffffff"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="活动时间"
+                    android:id="@+id/time_text"
+                    android:textSize="16sp"
+                    android:textColor="#515151"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp">
+            </TextView>
+            <TextView android:layout_width="110dp"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="开始时间"
+                      android:id="@+id/begin_time"
+                      android:textSize="12sp"
+                      android:layout_centerVertical="true"
+                      android:layout_toEndOf="@+id/time_text">
+            </TextView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="至"
+                    android:id="@+id/time_choose_text1"
+                    android:textSize="16sp"
+                    android:textColor="#515151"
+                    android:layout_marginEnd="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/begin_time"
+                    android:layout_marginStart="15dp">
+            </TextView>
+
+            <TextView android:layout_width="110dp"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:text="结束时间"
+                      android:id="@+id/end_time"
+                      android:textSize="12sp"
+                      android:layout_centerVertical="true"
+                      android:layout_toEndOf="@+id/time_choose_text1">
+            </TextView>
+
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button android:layout_width="160dp" android:layout_height="45dp"
+            android:id="@+id/time_choose_save_button"
+            android:background="@drawable/detail_activity_enroll_button"
+            android:text="保存"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp">
+    </Button>
+</RelativeLayout>

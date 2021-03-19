@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="115dp"
+        app:cardElevation="2dp"
+        android:layout_height="175dp"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="4dp">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:scaleType="centerCrop"
+                android:id="@+id/randomSponsor_image_home">
+        </ImageView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:id="@+id/sponsor_home_name"
+                android:textSize="10sp"
+                android:textColor="#000000">
+        </TextView>
+
+        <Button
+                android:layout_width="65dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
+                android:textSize="10sp"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="#7cba59"
+                android:id="@+id/sponsor_random_button_home"
+                android:text="查看"
+                android:background="@drawable/home_refresh_button">
+        </Button>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

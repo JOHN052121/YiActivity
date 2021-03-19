@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="#ffffff"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:id="@+id/activity_search_toplayout"
+        android:layout_marginTop="5dp"
+        android:layout_height="50dp">
+    <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/search_return_button"
+            android:layout_margin="10dp"
+            android:src="@drawable/back_icon">
+    </ImageView>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:hint="请输入搜索关键词"
+            android:drawableLeft="@drawable/search"
+            android:layout_marginTop="6dp"
+            android:textSize="12sp"
+            android:drawablePadding="5dp"
+            android:paddingLeft="8dp"
+            android:id="@+id/search_activity_keyword"
+            android:layout_marginEnd="20dp"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:background="@drawable/search_activity_edit"
+            android:layout_toEndOf="@+id/search_return_button">
+    </EditText>
+</RelativeLayout>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/search_history_text"
+              android:text="搜索历史"
+              android:textColor="#bfbfbf"
+              android:layout_marginStart="20dp"
+              android:layout_marginTop="10dp"
+              android:layout_below="@+id/activity_search_toplayout"
+              android:textSize="14sp">
+    </TextView>
+
+    <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/delete_search_history"
+            android:layout_alignTop="@+id/search_history_text"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="25dp"
+            android:src="@drawable/delete_history">
+    </ImageView>
+
+    <com.yiactivity.Utils.FlowLayout
+            android:layout_width="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="25dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_history_text"
+            android:background="#ffffff"
+            android:layout_alignStart="@+id/search_history_text"
+            android:layout_marginTop="15dp"
+            android:id="@+id/activity_search_flow">
+    </com.yiactivity.Utils.FlowLayout>
+
+</RelativeLayout>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/type_choose_topLayout">
+        <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/back_icon"
+                android:id="@+id/type_choose_back"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="10dp">
+        </ImageView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="活动种类"
+                android:layout_centerInParent="true"
+                android:textSize="19sp"
+                android:textColor="#000000">
+        </TextView>
+
+    </RelativeLayout>
+
+    <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/activity_type_radioGroup"
+            android:layout_below="@+id/type_choose_topLayout">
+            <RadioButton android:layout_width="100dp"
+                         android:layout_height="40dp"
+                         android:button="@null"
+                         android:gravity="center"
+                         android:textColor="@drawable/radiobutton_textcolor"
+                         android:id="@+id/choose_volunteer"
+                         android:text="志愿活动类"
+                         android:layout_gravity="center"
+                         android:layout_marginTop="30dp"
+                         android:background="@drawable/radiobutton_background">
+            </RadioButton>
+
+            <RadioButton android:layout_width="100dp"
+                         android:layout_height="40dp"
+                         android:button="@null"
+                         android:gravity="center"
+                         android:layout_gravity="center"
+                         android:textColor="@drawable/radiobutton_textcolor"
+                         android:id="@+id/choose_sports"
+                         android:text="文体比赛类"
+                         android:layout_marginTop="30dp"
+                         android:background="@drawable/radiobutton_background">
+            </RadioButton>
+
+            <RadioButton android:layout_width="100dp"
+                         android:layout_height="40dp"
+                         android:button="@null"
+                         android:gravity="center"
+                         android:text="社团活动类"
+                         android:textColor="@drawable/radiobutton_textcolor"
+                         android:id="@+id/choose_community"
+                         android:layout_marginTop="30dp"
+                         android:layout_gravity="center"
+                         android:background="@drawable/radiobutton_background">
+            </RadioButton>
+
+            <RadioButton android:layout_width="100dp"
+                         android:layout_height="40dp"
+                         android:layout_gravity="center"
+                         android:button="@null"
+                         android:gravity="center"
+                         android:text="学术竞赛类"
+                         android:textColor="@drawable/radiobutton_textcolor"
+                         android:id="@+id/choose_competition"
+                         android:layout_marginTop="30dp"
+                         android:background="@drawable/radiobutton_background">
+            </RadioButton>
+
+            <RadioButton android:layout_width="100dp"
+                         android:layout_height="40dp"
+                         android:button="@null"
+                         android:gravity="center"
+                         android:layout_gravity="center"
+                         android:text="讲座演说类"
+                         android:layout_marginTop="30dp"
+                         android:id="@+id/choose_lecture"
+                         android:textColor="@drawable/radiobutton_textcolor"
+                         android:background="@drawable/radiobutton_background">
+            </RadioButton>
+
+            <Button
+                    android:layout_width="160dp"
+                    android:layout_height="45dp"
+                    android:text="保存"
+                    android:id="@+id/save_choose_type"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="220dp"
+                    android:background="@drawable/detail_activity_enroll_button">
+            </Button>
+    </RadioGroup>
+
+</RelativeLayout>

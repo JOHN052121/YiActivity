@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:id="@+id/participant_detail_topLayout">
+
+        <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/back_icon"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true"
+                android:id="@+id/participant_detail_back">
+        </ImageView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="参与者详细信息"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:layout_centerInParent="true">
+        </TextView>
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:layout_below="@+id/participant_detail_topLayout"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="2dp">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <androidx.cardview.widget.CardView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    app:cardElevation="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    app:cardCornerRadius="35dp"
+                    android:id="@+id/participant_detail_image_card">
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/participant_detail_image"
+                        android:scaleType="centerCrop">
+                </ImageView>
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:id="@+id/participant_detail_line1"
+                    android:background="#cdcdcd"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/participant_detail_image_card">
+            </View>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="姓名:"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:id="@+id/participant_detail_name_text"
+                    android:layout_below="@+id/participant_detail_line1"
+                    android:layout_marginStart="30dp">
+            </TextView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_name"
+                    android:textColor="#707070"
+                    android:layout_alignTop="@+id/participant_detail_name_text"
+                    android:layout_marginEnd="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="15sp">
+            </TextView>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:id="@+id/participant_detail_line2"
+                    android:background="#cdcdcd"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/participant_detail_name">
+            </View>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_phoneNum_text"
+                    android:text="电话号:"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_alignStart="@+id/participant_detail_name_text"
+                    android:layout_below="@+id/participant_detail_line2">
+            </TextView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_phoneNum"
+                    android:textColor="#707070"
+                    android:layout_alignTop="@+id/participant_detail_phoneNum_text"
+                    android:layout_marginEnd="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="15sp">
+            </TextView>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:id="@+id/participant_detail_line3"
+                    android:background="#cdcdcd"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/participant_detail_phoneNum_text">
+            </View>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_email_text"
+                    android:text="邮箱:"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_alignStart="@+id/participant_detail_phoneNum_text"
+                    android:layout_below="@+id/participant_detail_line3">
+            </TextView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_email"
+                    android:textColor="#707070"
+                    android:layout_alignTop="@+id/participant_detail_email_text"
+                    android:layout_marginEnd="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="15sp">
+            </TextView>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:id="@+id/participant_detail_line4"
+                    android:background="#cdcdcd"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/participant_detail_email_text">
+            </View>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_gender_text"
+                    android:text="性别:"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_alignStart="@+id/participant_detail_phoneNum_text"
+                    android:layout_below="@+id/participant_detail_line4">
+            </TextView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_gender"
+                    android:textColor="#707070"
+                    android:layout_alignTop="@+id/participant_detail_gender_text"
+                    android:layout_marginEnd="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="15sp">
+            </TextView>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:id="@+id/participant_detail_line5"
+                    android:background="#cdcdcd"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/participant_detail_gender_text">
+            </View>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_university_text"
+                    android:text="学校:"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:layout_alignStart="@+id/participant_detail_phoneNum_text"
+                    android:layout_below="@+id/participant_detail_line5">
+            </TextView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/participant_detail_university"
+                    android:textColor="#707070"
+                    android:layout_alignTop="@+id/participant_detail_university_text"
+                    android:layout_marginEnd="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="15sp">
+            </TextView>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:id="@+id/participant_detail_line6"
+                    android:background="#cdcdcd"
+                    android:layout_margin="10dp"
+                    android:layout_below="@+id/participant_detail_university_text">
+            </View>
+
+
+            <Button
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:text="同意"
+                    android:textSize="16sp"
+                    android:textColor="#ffffff"
+                    android:layout_marginStart="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="100dp"
+                    android:background="@drawable/agree_button"
+                    android:id="@+id/participant_detail_agree">
+            </Button>
+
+            <Button android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/participant_detail_disagree"
+                    android:text="拒绝"
+                    android:background="@drawable/disagree_button"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp"
+                    android:layout_alignTop="@+id/participant_detail_agree"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="40dp">
+            </Button>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

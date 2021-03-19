@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/release_activity_topLayout">
+        <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/back_icon"
+                android:id="@+id/release_activity_back"
+                android:layout_marginTop="13dp"
+                android:layout_marginStart="10dp">
+        </ImageView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发布活动"
+                android:layout_centerInParent="true"
+                android:textSize="19sp"
+                android:textColor="#000000">
+        </TextView>
+    </RelativeLayout>
+    <ProgressBar
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"
+            android:id="@+id/release_progressbar">
+    </ProgressBar>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/release_activity_topLayout"
+            android:scrollbars="none">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="360dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="225dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="10dp"
+                    android:layout_gravity="center_horizontal">
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/release_activity_poster"
+                        android:src="@drawable/example_img"
+                        android:scaleType="centerCrop">
+                </ImageView>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="活动信息"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="20dp">
+            </TextView>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="360dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp">
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginStart="10dp"
+                            android:id="@+id/release_activity_name_text"
+                            android:text="活动名称"
+                            android:textColor="#000000"
+                            android:textSize="13sp">
+                    </TextView>
+
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_alignTop="@+id/release_activity_name_text"
+                            android:layout_height="wrap_content"
+                            android:hint="请输入活动名称"
+                            android:layout_marginEnd="10dp"
+                            android:textSize="13sp"
+                            android:id="@+id/release_activity_name"
+                            android:singleLine="true"
+                            android:layout_marginStart="180dp"
+                            android:background="@null"
+                            android:layout_toEndOf="@+id/release_activity_name_text">
+                    </EditText>
+
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1px"
+                          android:layout_below="@+id/release_activity_name_text"
+                          android:background="#dbdbdb">
+                    </View>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="活动时间"
+                            android:textSize="13sp"
+                            android:textColor="#000000"
+                            android:layout_below="@+id/release_activity_name_text"
+                            android:layout_alignStart="@+id/release_activity_name_text"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:id="@+id/release_activity_time_text">
+                    </TextView>
+
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_alignTop="@+id/release_activity_time_text"
+                            android:layout_height="wrap_content"
+                            android:text="待完善"
+                            android:gravity="end"
+                            android:textSize="13sp"
+                            android:focusable="false"
+                            android:textColor="#000000"
+                            android:id="@+id/release_activity_time"
+                            android:background="@null"
+                            android:layout_alignEnd="@+id/release_activity_name"
+                            android:singleLine="true">
+                    </EditText>
+
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1px"
+                          android:layout_below="@+id/release_activity_time_text"
+                          android:background="#dbdbdb">
+                    </View>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/release_activity_address_text"
+                            android:layout_below="@+id/release_activity_time_text"
+                            android:text="活动地址"
+                            android:textColor="#000000"
+                            android:textSize="13sp"
+                            android:layout_alignStart="@+id/release_activity_time_text"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp">
+                    </TextView>
+
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:id="@+id/release_activity_address"
+                            android:layout_alignStart="@+id/release_activity_name"
+                            android:hint="请输入活动地址"
+                            android:layout_alignTop="@+id/release_activity_address_text"
+                            android:textSize="13sp"
+                            android:textColor="#000000"
+                            android:background="@null">
+                    </EditText>
+
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1px"
+                          android:layout_below="@+id/release_activity_address_text"
+                          android:background="#dbdbdb">
+                    </View>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/release_activity_number_text"
+                            android:text="活动人数"
+                            android:textSize="13sp"
+                            android:textColor="#000000"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:layout_below="@+id/release_activity_address_text"
+                            android:layout_alignStart="@+id/release_activity_address_text">
+                    </TextView>
+
+                    <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="请输入活动人数"
+                            android:background="@null"
+                            android:layout_marginEnd="10dp"
+                            android:textSize="13sp"
+                            android:textColor="#000000"
+                            android:layout_alignStart="@id/release_activity_address"
+                            android:layout_alignTop="@+id/release_activity_number_text"
+                            android:id="@+id/release_activity_number">
+                    </EditText>
+
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1px"
+                          android:layout_below="@+id/release_activity_number_text"
+                          android:background="#dbdbdb">
+                    </View>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="活动设置"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="20dp">
+            </TextView>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="360dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="2dp">
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginStart="10dp"
+                            android:id="@+id/release_activity_type_text"
+                            android:text="活动种类"
+                            android:textColor="#000000"
+                            android:textSize="13sp">
+                    </TextView>
+
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1px"
+                          android:layout_below="@+id/release_activity_type_text"
+                          android:background="#dbdbdb">
+                    </View>
+
+                    <EditText
+                            android:layout_width="90dp"
+                            android:layout_alignTop="@+id/release_activity_type_text"
+                            android:layout_height="wrap_content"
+                            android:text="待选择"
+                            android:gravity="end"
+                            android:focusable="false"
+                            android:layout_marginEnd="10dp"
+                            android:textSize="13sp"
+                            android:id="@+id/release_activity_type"
+                            android:singleLine="true"
+                            android:layout_marginStart="180dp"
+                            android:background="@null"
+                            android:layout_toEndOf="@+id/release_activity_type_text">
+                    </EditText>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_below="@+id/release_activity_type_text"
+                            android:id="@+id/release_activity_content_text"
+                            android:text="活动内容"
+                            android:textColor="#000000"
+                            android:textSize="13sp">
+                    </TextView>
+                    <EditText
+                            android:layout_width="90dp"
+                            android:layout_alignTop="@+id/release_activity_content_text"
+                            android:layout_height="wrap_content"
+                            android:text="待完善"
+                            android:gravity="end"
+                            android:focusable="false"
+                            android:layout_marginEnd="10dp"
+                            android:textSize="13sp"
+                            android:id="@+id/release_activity_content"
+                            android:singleLine="true"
+                            android:layout_marginStart="180dp"
+                            android:background="@null"
+                            android:layout_toEndOf="@+id/release_activity_content_text">
+                    </EditText>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/release_activity_button"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp"
+                    android:background="@drawable/detail_activity_enroll_button"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="50dp"
+                    android:text="发布活动">
+            </Button>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

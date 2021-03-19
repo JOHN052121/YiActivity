@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activityType">
+        <item>志愿活动类</item>
+        <item>文体比赛类</item>
+        <item>社团活动类</item>
+        <item>学术竞赛类</item>
+        <item>讲座演说类</item>
+    </string-array>
+</resources>
