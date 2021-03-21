@@ -61,6 +61,7 @@ public class Search_all_activityAdapter extends RecyclerView.Adapter<Search_all_
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Activity activity = mActivityList.get(position);
+                BrowserCount.saveBrowserCount(mContext,activity.getActivityId());
                 Intent intent = new Intent(mContext, ActivityDetail.class);
                 intent.putExtra("userId",mUserId);
                 intent.putExtra("activityId",activity.getActivityId());

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.yiactivity.R;
+import com.yiactivity.Utils.BrowserCount;
 
 public class DataFragment extends Fragment {
 
@@ -30,6 +32,7 @@ public class DataFragment extends Fragment {
     private TextView activity_address;
     private TextView activity_time;
     private TextView enrolled_number;
+    private TextView browser_count;
 
     public DataFragment(int sponsorId,int activityId,String activityAddress,String activityName,String activityTime){
         mSponsorId = sponsorId;
@@ -46,7 +49,11 @@ public class DataFragment extends Fragment {
         activity_name = view.findViewById(R.id.data_activity_name);
         activity_time =view.findViewById(R.id.data_activity_time);
         enrolled_number = view.findViewById(R.id.data_fragment_enroll_number);
+        browser_count = view.findViewById(R.id.data_fragment_browser_number);
 
+        int count = BrowserCount.getBrowserCount(getActivity().getApplicationContext(),mActivityId);
+        Log.d("调试","count是"+count);
+        browser_count.setText(String.valueOf(count));
         activity_time.setText(mActivityTime);
         activity_name.setText(mActivityName);
         activity_address.setText(mActivityAddress);

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
+import com.yiactivity.model.User;
 import com.yiactivity.searchTopActivity.SearchActivity;
 
 import java.util.ArrayList;
@@ -11,16 +13,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class searchHistory {
+
     private final static String PREFERENCE_NAME = "superservice_ly";
-    private final static String SEARCH_HISTORY="linya_history";
     // 保存搜索记录
-    public static void saveSearchHistory(String inputText,Context context) {
+    public static void saveSearchHistory(String inputText,Context context,int mUserId) {
         SharedPreferences sp =context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
 
         if (TextUtils.isEmpty(inputText)) {
             return;
         }
-        String longHistory = sp.getString(SEARCH_HISTORY, "");  //获取之前保存的历史记录
+        String longHistory = sp.getString("linya_history"+ mUserId, "");  //获取之前保存的历史记录
+        Log.d("调试","linya_history"+ mUserId);
         String[] tmpHistory = longHistory.split(","); //逗号截取 保存在数组中
         List<String> historyList = new ArrayList<String>(Arrays.asList(tmpHistory)); //将改数组转换成ArrayList
         SharedPreferences.Editor editor = sp.edit();
@@ -42,18 +45,18 @@ public class searchHistory {
                 sb.append(historyList.get(i) + ",");
             }
             //保存到sp
-            editor.putString(SEARCH_HISTORY, sb.toString());
+            editor.putString("linya_history"+ mUserId, sb.toString());
             editor.commit();
         } else {
             //之前未添加过
-            editor.putString(SEARCH_HISTORY, inputText + ",");
+            editor.putString("linya_history"+ mUserId, inputText + ",");
             editor.commit();
         }
     }
     //获取搜索记录
-    public static List<String> getSearchHistory(Context context){
+    public static List<String> getSearchHistory(Context context,int mUserId){
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
-        String longHistory =sp.getString(SEARCH_HISTORY, "");
+        String longHistory =sp.getString("linya_history"+ mUserId, "");
         String[] tmpHistory = longHistory.split(","); //split后长度为1有一个空串对象
         List<String> historyList = new ArrayList<String>(Arrays.asList(tmpHistory));
         if (historyList.size() == 1 && historyList.get(0).equals("")) { //如果没有搜索记录，split之后第0位是个空串的情况下
@@ -63,10 +66,10 @@ public class searchHistory {
     }
 
     //清除历史记录
-    public static void clearSearchHistory(Context context){
+    public static void clearSearchHistory(Context context,int mUserId){
         SharedPreferences sp = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
-        edit.remove(SEARCH_HISTORY);
+        edit.remove("linya_history"+ mUserId);
         edit.commit();
     }
 }

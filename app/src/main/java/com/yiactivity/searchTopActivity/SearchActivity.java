@@ -36,6 +36,8 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        Intent getIntent = getIntent();
+        mUserId = getIntent.getIntExtra("user_id",0);
         flowLayout = findViewById(R.id.activity_search_flow);
         delete_history = findViewById(R.id.delete_search_history);
         if(Build.VERSION.SDK_INT >= 21){
@@ -63,9 +65,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH){
                     keyword = search_keyword.getText().toString();
-                    searchHistory.saveSearchHistory(keyword,getApplicationContext());
-                    Intent getIntent = getIntent();
-                    mUserId = getIntent.getIntExtra("user_id",0);
+                    searchHistory.saveSearchHistory(keyword,getApplicationContext(),mUserId);
                     final Intent intent = new Intent(SearchActivity.this,ShowSearchActivity.class);
                     Log.d("调试",keyword);
                     intent.putExtra("search_keyword",keyword);
@@ -80,7 +80,7 @@ public class SearchActivity extends AppCompatActivity {
         delete_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchHistory.clearSearchHistory(getApplicationContext());
+                searchHistory.clearSearchHistory(getApplicationContext(),mUserId);
                 flowLayout.removeAllViews();
             }
         });
@@ -90,7 +90,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        historyList = searchHistory.getSearchHistory(getApplicationContext());
+        historyList = searchHistory.getSearchHistory(getApplicationContext(),mUserId);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(10, 15, 10, 15);
         if (flowLayout != null) {

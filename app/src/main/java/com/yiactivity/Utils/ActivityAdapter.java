@@ -59,6 +59,7 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Activity activity = mActivityList.get(position);
+                BrowserCount.saveBrowserCount(mContext,activity.getActivityId());
                 Intent intent = new Intent(mContext, ActivityDetail.class);
                 intent.putExtra("activityId",activity.getActivityId());
                 intent.putExtra("userId",mUserId);
