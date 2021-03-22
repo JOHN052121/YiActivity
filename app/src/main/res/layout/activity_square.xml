@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    <TextView
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:id="@+id/activity_square_topLayout">
+        <TextView android:layout_width="80dp"
+                  android:layout_height="50dp"
+                  android:text="活动圈"
+                  android:textSize="22sp"
+                  android:textStyle="bold"
+                  android:gravity="center"
+                  android:id="@+id/square_text"
+                  android:layout_centerVertical="true"
+                  android:layout_marginStart="10dp"
+                  android:textColor="#000000">
+        </TextView>
+
+        <ImageView android:layout_width="21dp" android:layout_height="21dp"
+                   android:src="@drawable/notification"
+                   android:layout_toStartOf="@+id/add_activity_square"
+                   android:layout_marginEnd="15dp"
+                   android:id="@+id/add_activity_square_notification"
+                   android:layout_alignTop="@+id/add_activity_square">
+        </ImageView>
+
+        <ImageView android:layout_width="21dp"
+                   android:layout_height="21dp"
+                   android:layout_marginTop="13dp"
+                   android:src="@drawable/add"
+                   android:layout_alignTop="@+id/square_text"
+                   android:layout_alignParentEnd="true"
+                   android:layout_marginEnd="25dp"
+                   android:id="@+id/add_activity_square">
+        </ImageView>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="activity_square">
-    </TextView>
-</LinearLayout>
+            android:layout_below="@+id/activity_square_topLayout"
+            android:id="@+id/activity_square_recycle">
+    </androidx.recyclerview.widget.RecyclerView>
+</RelativeLayout>

@@ -723,4 +723,74 @@ public class DBOperation {
 
 
     }
+
+
+    /*
+    活动浏览量，用户每查看一个活动详情页就update该活动的count,如果是第一次查看就插入
+     */
+    public static void updateBrowserCount(int userId,int activityId){
+        Connection connection = DataBase.getSQLConnection();
+        String sql = "select browserCount from browser where userId = '" + userId + "' and activityId = '" + activityId + "' ";
+        String sql_insert = "INSERT INTO browser VALUES(?,?,?)";
+        if(connection != null){
+            try{
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if(rs.next()){
+                    int count = rs.getInt("browserCount");
+                    count = count+1;
+                    String sql_update = "UPDATE browser set browserCount = ? where userId = ? and activityId = ?";
+                    PreparedStatement ps = connection.prepareStatement(sql_update);
+                    ps.setInt(1,count);
+                    ps.setInt(2,userId);
+                    ps.setInt(3,activityId);
+                    ps.executeUpdate();
+                    ps.close();
+                    rs.close();
+                    st.close();
+                    connection.close();
+                }
+                else {
+                    PreparedStatement pstmt = connection.prepareStatement(sql_insert);
+                    pstmt.setInt(1,userId);
+                    pstmt.setInt(2,activityId);
+                    pstmt.setInt(3,1);
+                    pstmt.executeUpdate();
+                    pstmt.close();
+                    rs.close();
+                    st.close();
+                    connection.close();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    /*
+    获取活动浏览量，通过activityId获取浏览量总和
+     */
+
+    public static int getBrowserCount(int activityId){
+        Connection connection = DataBase.getSQLConnection();
+        String sql = "select sum(browserCount) as browserCount from browser where activityId = '" + activityId + "'";
+        if(connection != null){
+            try{
+                Statement st =  connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if(rs.next()){
+                    int count = rs.getInt("browserCount");
+                    return count;
+                }
+                else {
+                    return 0;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
 }

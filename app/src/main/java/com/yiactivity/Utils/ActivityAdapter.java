@@ -58,8 +58,13 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                Activity activity = mActivityList.get(position);
-                BrowserCount.saveBrowserCount(mContext,activity.getActivityId());
+                final Activity activity = mActivityList.get(position);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DBOperation.updateBrowserCount(mUserId,activity.getActivityId());
+                    }
+                }).start();
                 Intent intent = new Intent(mContext, ActivityDetail.class);
                 intent.putExtra("activityId",activity.getActivityId());
                 intent.putExtra("userId",mUserId);
