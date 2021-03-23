@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import com.yiactivity.model.Activity;
 import com.yiactivity.model.Sponsor;
+import com.yiactivity.model.Trend;
 import com.yiactivity.model.User;
 
 import javax.xml.transform.Result;
 import java.security.interfaces.RSAKey;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class DBOperation {
@@ -772,7 +774,6 @@ public class DBOperation {
     /*
     获取活动浏览量，通过activityId获取浏览量总和
      */
-
     public static int getBrowserCount(int activityId){
         Connection connection = DataBase.getSQLConnection();
         String sql = "select sum(browserCount) as browserCount from browser where activityId = '" + activityId + "'";
@@ -792,5 +793,56 @@ public class DBOperation {
             }
         }
         return 0;
+    }
+
+    /*
+    发布新活动圈动态
+     */
+    public static void releaseTrend(Trend trend){
+        Connection connection = DataBase.getSQLConnection();
+        String sql = "INSERT INTO trend VALUES(?,?,?)";
+        if(connection != null){
+            try{
+                PreparedStatement pstmt = connection.prepareStatement(sql);
+                pstmt.setInt(1,trend.getUserId());
+                pstmt.setString(2,trend.getContent());
+                pstmt.setBytes(3,trend.getImage());
+                pstmt.executeUpdate();
+                pstmt.close();
+                connection.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /*
+    主页人气活动top5查询
+     */
+    public static ArrayList<Activity> getPopularActivity(){
+        Connection connection = DataBase.getSQLConnection();
+        String sql = "select top 5 activity.activityId,poster,activityName,b.browserCount from activity,(select activityId,sum(browserCount) as browserCount from browser group by activityId) b where activity.activityId = b.activityId order by browserCount desc";
+        ArrayList<Activity> activityArrayList = new ArrayList<>();
+        if(connection != null){
+            try{
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()){
+                    Activity activity = new Activity();
+                    activity.setActivityId(rs.getInt("activityId"));
+                    activity.setPoster(rs.getBytes("poster"));
+                    activity.setActivityName(rs.getString("activityName"));
+                    activity.setBrowserCount(rs.getInt("browserCount"));
+                    activityArrayList.add(activity);
+                }
+                rs.close();
+                st.close();
+                connection.close();
+                return activityArrayList;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

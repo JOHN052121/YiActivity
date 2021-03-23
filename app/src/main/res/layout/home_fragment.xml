@@ -250,10 +250,17 @@
                     android:layout_marginTop="30dp"
                     android:text="人气活动">
             </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recyclerView_popular_home"
+                    android:layout_below="@+id/welcomed_activity"
+                    android:layout_margin="10dp">
+            </androidx.recyclerview.widget.RecyclerView>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/welcomed_activity"
+                    android:layout_below="@+id/recyclerView_popular_home"
                     android:textSize="18sp"
                     android:textColor="#000000"
                     android:id="@+id/sponsor_random"
@@ -266,7 +273,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/sponsor_random"
-                    android:layout_below="@+id/welcomed_activity"
+                    android:layout_below="@+id/recyclerView_popular_home"
                     android:textSize="12sp"
                     android:textColor="#bfbfbf"
                     android:id="@+id/sponsor_randomRefresh_text"
@@ -282,7 +289,7 @@
                     android:layout_marginStart="185dp"
                     android:src="@drawable/sponsor_random_refresh"
                     android:layout_toEndOf="@+id/sponsor_random"
-                    android:layout_below="@+id/welcomed_activity">
+                    android:layout_below="@+id/recyclerView_popular_home">
             </ImageView>
             <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"

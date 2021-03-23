@@ -7,19 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.detailOfActivity.ActivityDetail;
 import com.yiactivity.model.Activity;
-
 import java.util.ArrayList;
+import java.util.List;
 
-public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHolder> {
-
+public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHolder> {
     private Context mContext;
 
     private int mUserId;
@@ -27,24 +26,24 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
     private ArrayList<Activity> mActivityList;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        CardView cardView;
+        RelativeLayout relativeLayout;
         ImageView activityPoster;
         TextView activityName;
-        TextView activityType;
+        TextView activityBrowser;
 
         public ViewHolder(View view){
             super(view);
-            cardView = (CardView) view;
-            activityPoster = view.findViewById(R.id.activity_poster);
-            activityName = view.findViewById(R.id.activity_name);
-            activityType = view.findViewById(R.id.activity_type);
+            relativeLayout = (RelativeLayout) view;
+            activityPoster = view.findViewById(R.id.popular_activity_poster);
+            activityName = view.findViewById(R.id.popular_activity_name);
+            activityBrowser = view.findViewById(R.id.popular_activity_browser);
         }
     }
 
-    public ActivityAdapter(ArrayList<Activity> activityList, int userId){
-        mActivityList = activityList;
+    public PopularAdapter(ArrayList<Activity> activityArrayList,int userId){
+        mActivityList = activityArrayList;
         mUserId = userId;
-
+        System.out.println("adapter="+mActivityList.size());
     }
 
     @NonNull
@@ -53,9 +52,9 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         if(mContext == null){
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.activity_itme,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.popular_activity_item,parent,false);
         final ViewHolder holder = new ViewHolder(view);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
@@ -75,12 +74,13 @@ public class ActivityAdapter extends RecyclerView.Adapter<ActivityAdapter.ViewHo
         return holder;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Activity activity = mActivityList.get(position);
-        holder.activityName.setText(activity.getActivityName());
         Glide.with(mContext).load(activity.getPoster()).into(holder.activityPoster);
-        holder.activityType.setText(activity.getType().substring(0,4));
+        holder.activityName.setText(activity.getActivityName());
+        holder.activityBrowser.setText(String.valueOf(activity.getBrowserCount()));
     }
 
     @Override

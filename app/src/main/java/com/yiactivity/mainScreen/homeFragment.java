@@ -38,13 +38,16 @@ public class homeFragment extends Fragment {
     private ArrayList<Bitmap> bannerImgs_bit = new ArrayList<>();
     private ArrayList<Activity> activityArrayList_recommend = new ArrayList<>();
     private ArrayList<Activity> activityArrayList_volunteer = new ArrayList<>();
+    private ArrayList<Activity> activityArrayList_popular = new ArrayList<>();
     private ArrayList<Sponsor> sponsorArrayList = new ArrayList<>();
     private ActivityAdapter activityAdapter_recommend;
     private ActivityAdapter activityAdapter_volunteer;
+    private PopularAdapter activityAdapter_popular;
     private sponsorRandomAdapter sponsorRandomAdapter;
     private RecyclerView recyclerView_recommend;
     private RecyclerView recyclerView_volunteer;
     private RecyclerView recyclerView_randomSponsor;
+    private RecyclerView recyclerView_popular;
     private ProgressBar homeProgressBar;
     private ProgressBar progressIndicator;
     private float scrollX;
@@ -84,6 +87,7 @@ public class homeFragment extends Fragment {
         banner.start();
         recyclerView_recommend = view.findViewById(R.id.recyclerView_recommend);
         recyclerView_volunteer = view.findViewById(R.id.recyclerView_volunteer_home);
+        recyclerView_popular = view.findViewById(R.id.recyclerView_popular_home);
         homeProgressBar = view.findViewById(R.id.home_progressBar);
         homeProgressBar.setVisibility(View.VISIBLE);
         progressIndicator = view.findViewById(R.id.H_indicator);
@@ -228,6 +232,7 @@ public class homeFragment extends Fragment {
             public void run() {
                 activityArrayList_recommend = DBOperation.getRecommendActivity();
                 activityArrayList_volunteer = DBOperation.getRecommendActivity();
+                activityArrayList_popular = DBOperation.getPopularActivity();
                 sponsorArrayList = DBOperation.getRandomSponsor();
 
                 getActivity().runOnUiThread(new Runnable() {
@@ -250,6 +255,13 @@ public class homeFragment extends Fragment {
                         recyclerView_randomSponsor.setLayoutManager(layoutManager_randomSponsor);
                         sponsorRandomAdapter = new sponsorRandomAdapter(sponsorArrayList,mUserId);
                         recyclerView_randomSponsor.setAdapter(sponsorRandomAdapter);
+
+                        LinearLayoutManager layoutManager_popular = new LinearLayoutManager(getContext());
+                        layoutManager_popular.setOrientation(RecyclerView.VERTICAL);
+                        recyclerView_popular.setLayoutManager(layoutManager_popular);
+                        recyclerView_popular.setNestedScrollingEnabled(false);
+                        activityAdapter_popular = new PopularAdapter(activityArrayList_popular,mUserId);
+                        recyclerView_popular.setAdapter(activityAdapter_popular);
 
                         homeProgressBar.setVisibility(View.GONE);
                     }

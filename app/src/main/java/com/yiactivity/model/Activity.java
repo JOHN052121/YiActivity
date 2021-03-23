@@ -12,6 +12,15 @@ public class Activity {
     private int state;
     private int sponsorId;
     private byte[] poster;
+    private int browserCount;
+
+    public int getBrowserCount() {
+        return browserCount;
+    }
+
+    public void setBrowserCount(int browserCount) {
+        this.browserCount = browserCount;
+    }
 
     public int getActivityId() {
         return activityId;
