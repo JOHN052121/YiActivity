@@ -845,4 +845,57 @@ public class DBOperation {
         }
         return null;
     }
+
+    /*
+    根据userId获取用户的浏览记录
+     */
+    public static ArrayList<Activity> getBrowserHistory(int userId){
+        Connection connection = DataBase.getSQLConnection();
+        ArrayList<Activity> activityArrayList = new ArrayList<>();
+        String sql = "";
+        if(connection != null){
+            try{
+
+
+
+                return activityArrayList;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /*
+    获取活动圈内容
+     */
+    public static ArrayList<Trend> getTrend(){
+        Connection connection = DataBase.getSQLConnection();
+        ArrayList<Trend> trends = new ArrayList<>();
+        String sql = "select trend.id,trend.userId,trend.trend,trend.image,userName,users.image as userImg from trend,users where users.userId = trend.userId";
+        if(connection != null){
+            try{
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()){
+                    Trend trend = new Trend();
+                    trend.setId(rs.getInt("id"));
+                    trend.setUserId(rs.getInt("userId"));
+                    trend.setContent(rs.getString("trend"));
+                    trend.setUserName(rs.getString("userName"));
+                    trend.setImage(rs.getBytes("image"));
+                    trend.setUserImg(rs.getBytes("userImg"));
+                    trends.add(trend);
+                }
+                rs.close();
+                st.close();
+                connection.close();
+                return trends;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 }

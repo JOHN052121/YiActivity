@@ -2,12 +2,14 @@ package com.yiactivity.releaseTrends;
 
 import android.Manifest;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
@@ -18,11 +20,15 @@ import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.yiactivity.R;
+import com.yiactivity.Utils.DBOperation;
+import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.model.Trend;
 import com.yiactivity.register.userRegister;
 
 public class ReleaseTrend extends AppCompatActivity {
@@ -34,6 +40,7 @@ public class ReleaseTrend extends AppCompatActivity {
     private final static int CHOOSE_PHOTO = 2;
     private LinearLayout linearLayout;
     private int mUserId;
+    private Trend newTrend = new Trend();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +53,10 @@ public class ReleaseTrend extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
+        Intent intent = getIntent();
+        mUserId = intent.getIntExtra("user_id",0);
         init();
+
         //返回按钮监听器
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,8 +64,6 @@ public class ReleaseTrend extends AppCompatActivity {
                 finish();
             }
         });
-
-
         add_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +74,44 @@ public class ReleaseTrend extends AppCompatActivity {
                 } else {
                     openAlbum();
                 }
+            }
+        });
+
+        release_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReleaseTrend.this);
+                builder.setTitle("发布动态");
+                builder.setMessage("确定发布动态吗？");
+                builder.setCancelable(false);
+                builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        newTrend.setContent(release_content.getText().toString());
+                        newTrend.setImage(ImageToDB.bitmaoToString(((BitmapDrawable)add_img.getDrawable()).getBitmap()));
+                        newTrend.setUserId(mUserId);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DBOperation.releaseTrend(newTrend);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(ReleaseTrend.this, "发布成功", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                });
+                            }
+                        }).start();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
             }
         });
 

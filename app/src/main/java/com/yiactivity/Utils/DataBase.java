@@ -7,7 +7,7 @@ public class DataBase {
 
     private static String user = "sa";
     private static String password = "wyh052121";
-    private static String url="jdbc:jtds:sqlserver://192.168.1.109:1433;DatabaseName=YiActivity;useUnicode=true;characterEncoding=UTF-8";
+    private static String url="jdbc:jtds:sqlserver://192.168.1.111:1433;DatabaseName=YiActivity;useUnicode=true;characterEncoding=UTF-8";
     public static Connection getSQLConnection(){
 
         Connection connection = null;

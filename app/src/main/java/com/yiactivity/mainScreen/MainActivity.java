@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         EasyNavigationBar navigationBar = findViewById(R.id.navigationBar);
         fragments.add(new homeFragment(data));
         fragments.add(new activityListFragment(data));
-        fragments.add(new activitySquareFragment());
+        fragments.add(new activitySquareFragment(data));
         fragments.add(new myInfoFragment(data));
 
         navigationBar.titleItems(tabText)
