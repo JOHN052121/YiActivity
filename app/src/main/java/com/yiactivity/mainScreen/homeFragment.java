@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.yiactivity.R;
+import com.yiactivity.Services.UpdateStateService;
 import com.yiactivity.Utils.*;
 import com.yiactivity.mainScreen.searchActivity.VolunteerActivityList;
 import com.yiactivity.model.Activity;
@@ -40,14 +41,17 @@ public class homeFragment extends Fragment {
     private ArrayList<Activity> activityArrayList_volunteer = new ArrayList<>();
     private ArrayList<Activity> activityArrayList_popular = new ArrayList<>();
     private ArrayList<Sponsor> sponsorArrayList = new ArrayList<>();
+    private ArrayList<Activity> activityArrayList_school = new ArrayList<>();
     private ActivityAdapter activityAdapter_recommend;
     private ActivityAdapter activityAdapter_volunteer;
+    private Search_all_activityAdapter activityAdapter_school;
     private PopularAdapter activityAdapter_popular;
     private sponsorRandomAdapter sponsorRandomAdapter;
     private RecyclerView recyclerView_recommend;
     private RecyclerView recyclerView_volunteer;
     private RecyclerView recyclerView_randomSponsor;
     private RecyclerView recyclerView_popular;
+    private RecyclerView recyclerView_school;
     private ProgressBar homeProgressBar;
     private ProgressBar progressIndicator;
     private float scrollX;
@@ -88,12 +92,14 @@ public class homeFragment extends Fragment {
         recyclerView_recommend = view.findViewById(R.id.recyclerView_recommend);
         recyclerView_volunteer = view.findViewById(R.id.recyclerView_volunteer_home);
         recyclerView_popular = view.findViewById(R.id.recyclerView_popular_home);
+        recyclerView_school = view.findViewById(R.id.school_activity_recycler);
         homeProgressBar = view.findViewById(R.id.home_progressBar);
         homeProgressBar.setVisibility(View.VISIBLE);
         progressIndicator = view.findViewById(R.id.H_indicator);
         swipeRefresh = view.findViewById(R.id.home_swipe_refresh);
         recyclerView_randomSponsor = view.findViewById(R.id.sponsor_random_recyclerView);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+
         getRecommendActivity();
 
 
@@ -107,6 +113,7 @@ public class homeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
 
         //滑动指示器
         recyclerView_recommend.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -234,6 +241,7 @@ public class homeFragment extends Fragment {
                 activityArrayList_volunteer = DBOperation.getRecommendActivity();
                 activityArrayList_popular = DBOperation.getPopularActivity();
                 sponsorArrayList = DBOperation.getRandomSponsor();
+                activityArrayList_school = DBOperation.getSchoolActivity(mUserId);
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -262,6 +270,13 @@ public class homeFragment extends Fragment {
                         recyclerView_popular.setNestedScrollingEnabled(false);
                         activityAdapter_popular = new PopularAdapter(activityArrayList_popular,mUserId);
                         recyclerView_popular.setAdapter(activityAdapter_popular);
+
+                        LinearLayoutManager layoutManager_school = new LinearLayoutManager(getContext());
+                        layoutManager_school.setOrientation(RecyclerView.VERTICAL);
+                        recyclerView_school.setLayoutManager(layoutManager_school);
+                        recyclerView_school.setNestedScrollingEnabled(false);
+                        activityAdapter_school = new Search_all_activityAdapter(activityArrayList_school,mUserId);
+                        recyclerView_school.setAdapter(activityAdapter_school);
 
                         homeProgressBar.setVisibility(View.GONE);
                     }

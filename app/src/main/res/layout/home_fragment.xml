@@ -2,11 +2,14 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#ffffff"
     android:layout_height="match_parent">
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:id="@+id/top_layout"
+            android:background="#ffffff"
             android:layout_centerHorizontal="false"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="12dp"
@@ -297,6 +300,29 @@
                     android:layout_margin="10dp"
                     android:id="@+id/sponsor_random_recyclerView"
                     android:layout_below="@+id/sponsor_random">
+            </androidx.recyclerview.widget.RecyclerView>
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="60dp"
+                      android:text=" —— 本校活动 ——"
+                      android:gravity="center"
+                      android:textSize="19sp"
+                      android:textStyle="bold"
+                      android:background="#ffffff"
+                      android:textColor="#000000"
+                      android:layout_below="@id/sponsor_random_recyclerView"
+                      android:id="@+id/school_activity_text">
+            </TextView>
+            <View android:layout_width="match_parent"
+                  android:layout_height="1px"
+                  android:layout_below="@+id/school_activity_text"
+                  android:id="@+id/home_fragment_line1"
+                  android:background="#cdcdcd">
+            </View>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/school_activity_recycler"
+                    android:layout_below="@+id/home_fragment_line1">
             </androidx.recyclerview.widget.RecyclerView>
         </RelativeLayout>
     </ScrollView>

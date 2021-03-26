@@ -45,6 +45,8 @@ public class SponsorDetail extends AppCompatActivity {
         //初始化各控件
         init();
 
+        recyclerView.setNestedScrollingEnabled(false);
+
         if(Build.VERSION.SDK_INT >= 21){
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(

@@ -898,4 +898,99 @@ public class DBOperation {
         return null;
     }
 
+    /**
+     * 更改过期活动的state为2
+     * @param activityId
+     */
+    public static void overdueActivity(int activityId){
+        Connection connection = DataBase.getSQLConnection();
+        String sql = "update activity set state=? where activityId = '" + activityId + "'";
+        if(connection != null){
+            try {
+                PreparedStatement pstmt = connection.prepareStatement(sql);
+                pstmt.setInt(1,2);
+                pstmt.executeUpdate();
+                pstmt.close();
+                connection.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static int getActivityState(int activityId){
+        Connection connection = DataBase.getSQLConnection();
+        String sql = "select state from activity where activityId = '" + activityId + "'";
+        if(connection != null){
+            try {
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if(rs.next()){
+                    return rs.getInt("state");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 获取展示在活动详情页的主办方的部分信息
+     * @param sponsorId
+     * @return
+     */
+    public static Sponsor getSponsorInfo(int sponsorId){
+        Connection connection = DataBase.getSQLConnection();
+        Sponsor sponsor = new Sponsor();
+        String sql  = "select sponsor.sponsorId,org_Name,sponIntro,sponsorImage,c.count from sponsor,(select * from (select sponsorId,count(sponsorId) as count from activity group by sponsorId) as b where sponsorId = '" + sponsorId + "' ) as c where c.sponsorId = sponsor.sponsorId";
+        if(connection != null){
+            try{
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if(rs.next()){
+                    sponsor.setSponsorId(rs.getInt("sponsorId"));
+                    sponsor.setSponsorIntro(rs.getString("sponIntro"));
+                    sponsor.setSponsorImage(rs.getBytes("sponsorImage"));
+                    sponsor.setActivityNumOfSponsor(rs.getInt("count"));
+                    sponsor.setOrg_Name(rs.getString("org_Name"));
+                }
+                rs.close();
+                st.close();
+                connection.close();
+                return sponsor;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<Activity> getSchoolActivity(int userId){
+        Connection connection = DataBase.getSQLConnection();
+        ArrayList<Activity> activityArrayList = new ArrayList<>();
+        String sql = "select activityId,activityName,time,type,activity.sponsorId,poster from activity ,(select sponsorId from sponsor,(select * from users where userId  = '" + userId + "') as b where b.university = sponsor.university) as c where c.sponsorId = activity.sponsorId";
+        if(connection != null){
+            try{
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while(rs.next()){
+                    Activity activity = new Activity();
+                    activity.setActivityId(rs.getInt("activityId"));
+                    activity.setActivityName(rs.getString("activityName"));
+                    activity.setPoster(rs.getBytes("poster"));
+                    activity.setTime(rs.getString("time"));
+                    activity.setType(rs.getString("type"));
+                    activityArrayList.add(activity);
+                }
+                rs.close();
+                st.close();
+                connection.close();
+                return activityArrayList;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }

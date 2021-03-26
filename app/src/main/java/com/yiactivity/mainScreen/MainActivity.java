@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.yiactivity.R;
+import com.yiactivity.Services.UpdateStateService;
 import com.yiactivity.mainScreen.searchActivity.VolunteerActivityList;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         if(Build.VERSION.SDK_INT >= 21){
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        setContentView(R.layout.activity_main);
         Intent intent = getIntent();
         int data = intent.getIntExtra("user_id",0);
         EasyNavigationBar navigationBar = findViewById(R.id.navigationBar);
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 .fragmentManager(getSupportFragmentManager())
                 .build();
 
+        Intent startIntent = new Intent(this, UpdateStateService.class);
+        startService(startIntent);
 
 
     }

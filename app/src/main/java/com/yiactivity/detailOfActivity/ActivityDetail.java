@@ -24,6 +24,7 @@ import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.ImageToDB;
 import com.yiactivity.detailOfSponsor.SponsorDetail;
 import com.yiactivity.model.Activity;
+import com.yiactivity.model.Sponsor;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import org.w3c.dom.Text;
 
@@ -45,6 +46,10 @@ public class ActivityDetail extends AppCompatActivity implements detailOfActivit
     private Button detail_activity_enroll_button;
     private ImageView sponsor_icon;
     private int sponsorId;
+    private ImageView sponsor_img;
+    private TextView sponsor_intro;
+    private TextView sponsor_name;
+    private TextView sponsor_activity_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +67,13 @@ public class ActivityDetail extends AppCompatActivity implements detailOfActivit
         toolbar = findViewById(R.id.detail_activity_toolbar);
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        //活动背部高斯模糊大图
-        bigImage = findViewById(R.id.detail_activity_bigImage);
-        Glide.with(this).load(R.drawable.detail_background)
-                .apply(bitmapTransform(new BlurTransformation(40))).into(bigImage);
+
 
         //获取从activityAdapter传过来的activityId 和 userId
         final Intent intent = getIntent();
@@ -87,6 +90,8 @@ public class ActivityDetail extends AppCompatActivity implements detailOfActivit
             public void run() {
                 detailOfActivityPresenter.getDetailOfActivity(activityId);
                 detailOfActivityPresenter.getEnrollState(activityId,userId);
+                detailOfActivityPresenter.getSponsorInfo(sponsorId);
+
             }
         }).start();
 
@@ -146,16 +151,23 @@ public class ActivityDetail extends AppCompatActivity implements detailOfActivit
         detail_activity_poster = findViewById(R.id.detail_activity_poster);
         detail_activity_enroll_button = findViewById(R.id.detail_activity_enroll_button);
         sponsor_icon = findViewById(R.id.activity_detail_sponsor);
+        sponsor_img = findViewById(R.id.activity_detail_sponsor_img);
+        sponsor_name = findViewById(R.id.activity_detail_sponsor_name);
+        sponsor_intro = findViewById(R.id.activity_detail_sponsor_intro);
+        sponsor_activity_number = findViewById(R.id.activity_detail_activity_number);
     }
     @Override
     public void setDetailOfActivity(final Activity activity) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                collapsingToolbarLayout.setTitle(activity.getActivityName());
                 detail_activity_Name.setText(activity.getActivityName());
                 detail_activity_address.setText(activity.getAddress());
                 detail_activity_content.setText(activity.getAddressContent());
+                //活动背部高斯模糊大图
+                bigImage = findViewById(R.id.detail_activity_bigImage);
+                Glide.with(getApplicationContext()).load(activity.getPoster())
+                        .apply(bitmapTransform(new BlurTransformation(40))).into(bigImage);
                 detail_activity_time.setText(activity.getTime());
                 Glide.with(ActivityDetail.this).load(activity.getPoster()).into(detail_activity_poster);
                 sponsorId = activity.getSponsorId();
@@ -181,7 +193,24 @@ public class ActivityDetail extends AppCompatActivity implements detailOfActivit
                 detail_activity_enroll_button.setBackground(getResources().getDrawable(R.drawable.detail_activity_enroll_buttoned));
                 detail_activity_enroll_button.setText("已参与");
                 break;
+            case 4:
+                detail_activity_enroll_button.setBackground(getResources().getDrawable(R.drawable.detail_activity_enroll_buttoned));
+                detail_activity_enroll_button.setText("已结束");
+                break;
         }
+    }
+
+    @Override
+    public void setSponsorInfo(final Sponsor sponsor) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sponsor_name.setText(sponsor.getOrg_Name());
+                Glide.with(getApplicationContext()).load(sponsor.getSponsorImage()).into(sponsor_img);
+                sponsor_activity_number.setText(String.valueOf(sponsor.getActivityNumOfSponsor()));
+                sponsor_intro.setText(sponsor.getSponsorIntro());
+            }
+        });
     }
 
     @Override

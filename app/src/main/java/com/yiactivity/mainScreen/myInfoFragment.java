@@ -57,8 +57,6 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
         activity_signed = view.findViewById(R.id.myInfo_signed);
         activity_signing = view.findViewById(R.id.myInfo_signing);
         activity_thinked = view.findViewById(R.id.myInfo_think);
-        Glide.with(this).load(R.drawable.background)
-                .apply(bitmapTransform(new BlurTransformation(25))).into(bigImage);
         exit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +116,8 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
                     public void run() {
                         myInfo_name.setText(user.getUserName());
                         Glide.with(myInfoFragment.this).load(user.getImage()).into(myInfo_image);
+                        Glide.with(getContext()).load(user.getImage())
+                                .apply(bitmapTransform(new BlurTransformation(25))).into(bigImage);
                     }
                 });
 

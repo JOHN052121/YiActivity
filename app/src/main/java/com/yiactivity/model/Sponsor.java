@@ -28,6 +28,16 @@ public class Sponsor implements Serializable {
 
     private String sponsorIntro;
 
+    private int activityNumOfSponsor;
+
+    public int getActivityNumOfSponsor() {
+        return activityNumOfSponsor;
+    }
+
+    public void setActivityNumOfSponsor(int activityNumOfSponsor) {
+        this.activityNumOfSponsor = activityNumOfSponsor;
+    }
+
     public String getSponsorIntro() {
         return sponsorIntro;
     }

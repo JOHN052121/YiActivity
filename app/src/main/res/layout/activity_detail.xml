@@ -13,9 +13,10 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:expandedTitleMarginStart="5dp"
                 android:id="@+id/collapsing_toolbar"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:contentScrim="@color/colorPrimary"
+                android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
+                app:contentScrim="#ffffff"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <RelativeLayout
                     android:layout_width="match_parent"
@@ -53,7 +54,7 @@
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -62,10 +63,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_activity_name"
-                    android:textSize="20sp"
-                    android:layout_marginTop="20dp"
+                    android:textSize="22sp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginStart="25dp"
-                    android:textColor="#000000"
+                    android:textColor="#2c2c2c"
                     android:textStyle="bold">
             </TextView>
             <ImageView
@@ -109,11 +110,155 @@
                     android:layout_toEndOf="@+id/detail_activity_location_img"
                     android:layout_marginStart="7dp">
             </TextView>
+
             <View android:layout_width="match_parent"
                   android:layout_height="6dp"
                   android:layout_marginTop="10dp"
                   android:id="@+id/detail_activity_line1"
                   android:layout_below="@+id/detail_activity_location_img"
+                  android:background="#e6e6e6">
+            </View>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_below="@+id/detail_activity_line1"
+                    android:id="@+id/sponsor_info_relative">
+                <ImageView 
+                        android:layout_width="60dp" 
+                        android:layout_height="60dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="16dp"
+                        android:id="@+id/activity_detail_sponsor_img"
+                        android:scaleType="centerCrop">
+                </ImageView>
+                
+                <TextView 
+                        android:layout_width="match_parent" 
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:layout_marginEnd="50dp"
+                        android:ellipsize="end"
+                        android:textColor="#000000"
+                        android:textSize="15sp"
+                        android:layout_alignTop="@+id/activity_detail_sponsor_img"
+                        android:layout_toEndOf="@+id/activity_detail_sponsor_img"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/activity_detail_sponsor_name">
+                </TextView>
+                
+                <TextView 
+                        android:layout_width="match_parent" 
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/activity_detail_sponsor_name"
+                        android:id="@+id/activity_detail_sponsor_intro"
+                        android:layout_alignStart="@+id/activity_detail_sponsor_name"
+                        android:layout_marginEnd="100dp"
+                        android:maxLines="2"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp">
+                </TextView>
+                
+                <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                           android:layout_alignStart="@+id/activity_detail_sponsor_intro"
+                           android:src="@drawable/activity_icon"
+                           android:layout_below="@+id/activity_detail_sponsor_intro"
+                           android:id="@+id/activity_icon"
+                           android:layout_marginTop="5dp">
+                </ImageView>
+                
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="活动"
+                        android:layout_marginTop="3dp"
+                        android:textSize="11sp"
+                        android:layout_marginStart="3dp"
+                        android:layout_toEndOf="@+id/activity_icon"
+                        android:layout_alignTop="@+id/activity_icon"
+                        android:id="@+id/activity_icon_text">
+                </TextView>
+                
+                <TextView android:layout_width="wrap_content" 
+                          android:layout_height="wrap_content"
+                          android:textColor="#000000"
+                          android:textSize="14sp"
+                          android:id="@+id/activity_detail_activity_number"
+                          android:layout_toEndOf="@+id/activity_icon_text"
+                          android:layout_alignTop="@+id/activity_icon"
+                          android:layout_marginStart="5dp">
+                </TextView>
+
+                <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/funs"
+                        android:layout_alignTop="@+id/activity_icon"
+                        android:layout_toEndOf="@+id/activity_detail_activity_number"
+                        android:layout_marginStart="60dp"
+                        android:id="@+id/funs_img">
+                </ImageView>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/funs_text"
+                        android:layout_toEndOf="@+id/funs_img"
+                        android:text="粉丝"
+                        android:textSize="11sp"
+                        android:layout_alignTop="@+id/funs_img"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginStart="3dp">
+                </TextView>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/funs_number"
+                        android:layout_toEndOf="@+id/funs_text"
+                        android:layout_alignTop="@+id/funs_img"
+                        android:text="19"
+                        android:layout_marginStart="10dp"
+                        android:textSize="14sp"
+                        android:textColor="#000000">
+                </TextView>
+
+                <Button android:layout_width="130dp"
+                        android:layout_height="30dp"
+                        android:layout_below="@+id/funs_text"
+                        android:id="@+id/subscribe_button"
+                        android:text="+关注"
+                        android:textSize="14sp"
+                        android:background="@drawable/subscribe_button_shape"
+                        android:gravity="center"
+                        android:stateListAnimator="@null"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginTop="25dp"
+                        android:textColor="#2aa515">
+                </Button>
+
+                <Button
+                        android:layout_width="130dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/subscribe_button_shape"
+                        android:id="@+id/sponsor_detail_button"
+                        android:text="主办方详情"
+                        android:textSize="14sp"
+                        android:stateListAnimator="@null"
+                        android:gravity="center"
+                        android:textColor="#2aa515"
+                        android:layout_alignTop="@+id/subscribe_button"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="50dp">
+                </Button>
+
+            </RelativeLayout>
+            <View android:layout_width="match_parent"
+                  android:layout_height="6dp"
+                  android:layout_marginTop="10dp"
+                  android:id="@+id/detail_activity_line2"
+                  android:layout_below="@+id/sponsor_info_relative"
                   android:background="#e6e6e6">
             </View>
             <TextView
@@ -122,7 +267,7 @@
                     android:text="活动内容"
                     android:id="@+id/detail_activity_content_title"
                     android:textSize="16sp"
-                    android:layout_below="@+id/detail_activity_line1"
+                    android:layout_below="@+id/detail_activity_line2"
                     android:layout_centerHorizontal="true"
                     android:textColor="#000000"
                     android:textStyle="bold"
@@ -139,6 +284,7 @@
                     android:textColor="#000000"
                     android:textSize="13sp">
             </TextView>
+
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
     <RelativeLayout
