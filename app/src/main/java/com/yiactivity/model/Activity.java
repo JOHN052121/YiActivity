@@ -13,6 +13,15 @@ public class Activity {
     private int sponsorId;
     private byte[] poster;
     private int browserCount;
+    private int loadMoreType;
+
+    public int getLoadMoreType() {
+        return loadMoreType;
+    }
+
+    public void setLoadMoreType(int loadMoreType) {
+        this.loadMoreType = loadMoreType;
+    }
 
     public int getBrowserCount() {
         return browserCount;

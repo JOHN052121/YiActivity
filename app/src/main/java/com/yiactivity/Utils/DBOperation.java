@@ -225,7 +225,7 @@ public class DBOperation {
     public static ArrayList<Activity> getRecommendActivity(){
         ArrayList<Activity> activityList = new ArrayList<>();
         Connection connection = DataBase.getSQLConnection();
-        String sql = "select * from activity";
+        String sql = "select top 6 * from activity";
         try {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -277,10 +277,43 @@ public class DBOperation {
     }
 
     /**
-     * 找活动页面 返回一个包含所有活动的ArrayList<Activity>
+     * 找活动页面 返回一个包含指定区间活动的ArrayList<Activity>
      * @return
      */
-    public static ArrayList<Activity> getAllActivity(){
+    public static ArrayList<Activity> getAllActivity(int begin,int end){
+        ArrayList<Activity> activityList = new ArrayList<>();
+        Connection connection = DataBase.getSQLConnection();
+        String sql = "select * from activity where activityId between "+ begin +" and "+ end +" ";
+        try {
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                Activity activity = new Activity();
+                activity.setActivityId(rs.getInt("activityId"));
+                activity.setActivityName(rs.getString("activityName"));
+                activity.setAddress(rs.getString("address"));
+                activity.setAddressContent(rs.getString("activityContent"));
+                activity.setTime(rs.getString("time"));
+                activity.setState(rs.getInt("state"));
+                activity.setType(rs.getString("type"));
+                activity.setSponsorId(rs.getInt("sponsorId"));
+                activity.setPoster(rs.getBytes("poster"));
+                activityList.add(activity);
+            }
+            rs.close();
+            st.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return activityList;
+    }
+
+
+    /*
+    找活动页面 返回一个包含所有活动的ArrayList
+     */
+    public static ArrayList<Activity> getAllOfActivity(){
         ArrayList<Activity> activityList = new ArrayList<>();
         Connection connection = DataBase.getSQLConnection();
         String sql = "select * from activity";
@@ -969,7 +1002,7 @@ public class DBOperation {
     public static ArrayList<Activity> getSchoolActivity(int userId){
         Connection connection = DataBase.getSQLConnection();
         ArrayList<Activity> activityArrayList = new ArrayList<>();
-        String sql = "select activityId,activityName,time,type,activity.sponsorId,poster from activity ,(select sponsorId from sponsor,(select * from users where userId  = '" + userId + "') as b where b.university = sponsor.university) as c where c.sponsorId = activity.sponsorId";
+        String sql = "select activityId,activityName,time,type,activity.sponsorId,poster from activity ,(select sponsorId from sponsor,(select * from users where userId  = '" + userId + "') as b where b.university = sponsor.university) as c where c.sponsorId = activity.sponsorId ";
         if(connection != null){
             try{
                 Statement st = connection.createStatement();

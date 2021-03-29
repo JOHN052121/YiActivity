@@ -28,7 +28,7 @@ public class UpdateStateService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                activityArrayList = DBOperation.getAllActivity();
+                activityArrayList = DBOperation.getAllOfActivity();
                 for(Activity activity:activityArrayList){
                     if(stringToLong(activity.getTime().substring(17)) < dateToStringToLong() ){
                         DBOperation.overdueActivity(activity.getActivityId());

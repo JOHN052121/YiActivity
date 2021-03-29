@@ -54,26 +54,26 @@ public class Search_all_activityAdapter extends RecyclerView.Adapter<Search_all_
         {
             mContext = parent.getContext();
         }
-        View view = LayoutInflater.from(mContext).inflate(R.layout.all_activity_list_crad,parent,false);
-        final ViewHolder holder = new ViewHolder(view);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                final Activity activity = mActivityList.get(position);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DBOperation.updateBrowserCount(mUserId,activity.getActivityId());
-                    }
-                }).start();
-                Intent intent = new Intent(mContext, ActivityDetail.class);
-                intent.putExtra("userId",mUserId);
-                intent.putExtra("activityId",activity.getActivityId());
-                mContext.startActivity(intent);
-            }
-        });
-        return holder;
+            View view = LayoutInflater.from(mContext).inflate(R.layout.all_activity_list_crad, parent, false);
+            final ViewHolder holder = new ViewHolder(view);
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getAdapterPosition();
+                    final Activity activity = mActivityList.get(position);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DBOperation.updateBrowserCount(mUserId, activity.getActivityId());
+                        }
+                    }).start();
+                    Intent intent = new Intent(mContext, ActivityDetail.class);
+                    intent.putExtra("userId", mUserId);
+                    intent.putExtra("activityId", activity.getActivityId());
+                    mContext.startActivity(intent);
+                }
+            });
+            return holder;
     }
 
     @Override
@@ -89,4 +89,6 @@ public class Search_all_activityAdapter extends RecyclerView.Adapter<Search_all_
     public int getItemCount() {
         return mActivityList.size();
     }
+
+
 }

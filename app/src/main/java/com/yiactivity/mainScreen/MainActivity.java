@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             decorView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
                             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setStatusBarColor(Color.WHITE);
         }
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
@@ -48,6 +48,54 @@ public class MainActivity extends AppCompatActivity {
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectedIcon)
                 .fragmentList(fragments)
+                .setOnTabClickListener(new EasyNavigationBar.OnTabClickListener() {
+                    @Override
+                    public boolean onTabSelectEvent(View view, int position) {
+                        switch (position){
+                            case 0:
+                                if(Build.VERSION.SDK_INT >= 21){
+                                    View decorView = getWindow().getDecorView();
+                                    decorView.setSystemUiVisibility(
+                                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                                    getWindow().setStatusBarColor(Color.WHITE);
+                                }
+                                break;
+                            case 1:
+                                if(Build.VERSION.SDK_INT >= 21){
+                                    View decorView = getWindow().getDecorView();
+                                    decorView.setSystemUiVisibility(
+                                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                                    getWindow().setStatusBarColor(Color.WHITE);
+                                }
+                                break;
+                            case 2:
+                                if(Build.VERSION.SDK_INT >= 21){
+                                    View decorView = getWindow().getDecorView();
+                                    decorView.setSystemUiVisibility(
+                                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                                    getWindow().setStatusBarColor(Color.WHITE);
+                                }
+                                break;
+                            case 3:
+                                if(Build.VERSION.SDK_INT >= 21){
+                                    View decorView = getWindow().getDecorView();
+                                    decorView.setSystemUiVisibility(
+                                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                                    getWindow().setStatusBarColor(Color.TRANSPARENT);
+                                }
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onTabReSelectEvent(View view, int position) {
+                        return false;
+                    }
+                })
                 .fragmentManager(getSupportFragmentManager())
                 .build();
 

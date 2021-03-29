@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.detailOfUser.DetailUserMain;
 import com.yiactivity.mainScreen.ActivityMyInfo.EnrolledActivity;
 import com.yiactivity.mainScreen.ActivityMyInfo.SignedActivity;
 import com.yiactivity.mainScreen.ActivityMyInfo.SigningActivity;
@@ -40,6 +41,7 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
     private ImageView activity_signing;
     private ImageView activity_signed;
     private ImageView activity_thinked;
+    private Button edit_button;
 
     public myInfoFragment(int userId){
         mUserId = userId;
@@ -57,6 +59,19 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
         activity_signed = view.findViewById(R.id.myInfo_signed);
         activity_signing = view.findViewById(R.id.myInfo_signing);
         activity_thinked = view.findViewById(R.id.myInfo_think);
+        edit_button = view.findViewById(R.id.edit_myInfo);
+
+        //编辑资料按钮监听器
+        edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),MyInfoEdit.class);
+                intent.putExtra("user_id",mUserId);
+                startActivity(intent);
+            }
+        });
+
+        //退出按钮监听器
         exit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +83,16 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
         activity_signing.setOnClickListener(this);
         activity_signed.setOnClickListener(this);
         activity_thinked.setOnClickListener(this);
+
+        //头像点击进入个人信息页面
+        myInfo_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), DetailUserMain.class);
+                intent.putExtra("user_id",mUserId);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

@@ -12,6 +12,7 @@ import android.view.ViewOutlineProvider;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,8 @@ import com.youth.banner.Banner;
 import com.yiactivity.mainScreen.typeActivity.diffTypeActivity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class homeFragment extends Fragment {
 
@@ -47,6 +50,7 @@ public class homeFragment extends Fragment {
     private Search_all_activityAdapter activityAdapter_school;
     private PopularAdapter activityAdapter_popular;
     private sponsorRandomAdapter sponsorRandomAdapter;
+    private LoadMoreAdapter loadMoreAdapter;
     private RecyclerView recyclerView_recommend;
     private RecyclerView recyclerView_volunteer;
     private RecyclerView recyclerView_randomSponsor;
@@ -65,7 +69,9 @@ public class homeFragment extends Fragment {
     private ImageView lecture;
     private ImageView competiton;
     private ImageView community;
-
+    private ScrollView scrollView;
+    private List<Activity> currentArrayList = new ArrayList<>();
+    private int end = 4;
 
     public homeFragment(int userId) {
         mUserId = userId;
@@ -99,6 +105,7 @@ public class homeFragment extends Fragment {
         swipeRefresh = view.findViewById(R.id.home_swipe_refresh);
         recyclerView_randomSponsor = view.findViewById(R.id.sponsor_random_recyclerView);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+        scrollView = view.findViewById(R.id.home_fragment_scroll);
 
         getRecommendActivity();
 
@@ -238,7 +245,7 @@ public class homeFragment extends Fragment {
             @Override
             public void run() {
                 activityArrayList_recommend = DBOperation.getRecommendActivity();
-                activityArrayList_volunteer = DBOperation.getRecommendActivity();
+                //activityArrayList_volunteer = DBOperation.getRecommendActivity();
                 activityArrayList_popular = DBOperation.getPopularActivity();
                 sponsorArrayList = DBOperation.getRandomSponsor();
                 activityArrayList_school = DBOperation.getSchoolActivity(mUserId);
@@ -255,7 +262,7 @@ public class homeFragment extends Fragment {
                         GridLayoutManager layoutManager_volunteer = new GridLayoutManager(getContext(), 2);
                         layoutManager_volunteer.setOrientation(RecyclerView.HORIZONTAL);
                         recyclerView_volunteer.setLayoutManager(layoutManager_volunteer);
-                        activityAdapter_volunteer = new ActivityAdapter(activityArrayList_volunteer, mUserId);
+                        activityAdapter_volunteer = new ActivityAdapter(activityArrayList_recommend, mUserId);
                         recyclerView_volunteer.setAdapter(activityAdapter_volunteer);
 
                         LinearLayoutManager layoutManager_randomSponsor = new LinearLayoutManager(getContext());
@@ -275,8 +282,45 @@ public class homeFragment extends Fragment {
                         layoutManager_school.setOrientation(RecyclerView.VERTICAL);
                         recyclerView_school.setLayoutManager(layoutManager_school);
                         recyclerView_school.setNestedScrollingEnabled(false);
-                        activityAdapter_school = new Search_all_activityAdapter(activityArrayList_school,mUserId);
-                        recyclerView_school.setAdapter(activityAdapter_school);
+                        //activityAdapter_school = new Search_all_activityAdapter(activityArrayList_school,mUserId);
+                        //recyclerView_school.setAdapter(activityAdapter_school);
+                        if(activityArrayList_school.size() < 6) {
+                            loadMoreAdapter = new LoadMoreAdapter(activityArrayList_school, mUserId);
+                            currentArrayList = activityArrayList_school;
+                        }
+                        else{
+                            currentArrayList = activityArrayList_school.subList(0,4);
+                            loadMoreAdapter = new LoadMoreAdapter(currentArrayList,mUserId);
+                        }
+                        recyclerView_school.setAdapter(loadMoreAdapter);
+                        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                            @Override
+                            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                View contentView = scrollView.getChildAt(0);
+                                if(contentView != null && contentView.getMeasuredHeight() == (scrollView.getScrollY() + scrollView.getHeight())){
+                                    loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING);
+
+                                    if (currentArrayList.size() < activityArrayList_school.size()) {
+                                        if(activityArrayList_school.size() - currentArrayList.size() < 5){
+                                            currentArrayList = activityArrayList_school;
+                                        }
+                                        else {
+                                            end = end + 5;
+                                            currentArrayList = activityArrayList_school.subList(0,end);
+                                        }
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_COMPLETE);
+                                            }
+                                        });
+                                    } else {
+                                        // 显示加载到底的提示
+                                        loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_END);
+                                    }
+                                }
+                            }
+                        });
 
                         homeProgressBar.setVisibility(View.GONE);
                     }
@@ -284,5 +328,6 @@ public class homeFragment extends Fragment {
             }
         }).start();
     }
+
 
 }

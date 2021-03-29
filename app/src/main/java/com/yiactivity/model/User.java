@@ -14,6 +14,15 @@ public class User {
     private int point;
     private byte[] image;
     private int statement;
+    private String sign;
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
 
     public int getStatement() {
         return statement;

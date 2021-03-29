@@ -24,7 +24,7 @@ public class test extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                activityArrayList = DBOperation.getAllActivity();
+                activityArrayList = DBOperation.getAllActivity(1,5);
                 long time1 = stringToLong(activityArrayList.get(1).getTime().substring(17));
                 System.out.println(time1);
                 System.out.println(stringToLong(datetime));

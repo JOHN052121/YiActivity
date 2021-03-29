@@ -13,8 +13,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".detailOfUser.DetailUserMain">
+        </activity>
+        <activity android:name=".mainScreen.MyInfoEdit">
+        </activity>
         <activity android:name=".Utils.test">
-
         </activity>
 
         <service

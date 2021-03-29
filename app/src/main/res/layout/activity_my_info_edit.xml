@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:background="#ffffff"
+                android:fitsSystemWindows="true"
+                android:layout_height="match_parent">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/myInfo_edit_top_layout"
+            android:layout_height="50dp">
+        <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="17dp"
+                android:id="@+id/myInfo_edit_back"
+                android:src="@drawable/back_icon">
+        </ImageView>
+
+        <TextView android:layout_width="250dp" android:layout_height="match_parent"
+                  android:layout_centerInParent="true"
+                  android:ellipsize="end"
+                  android:textColor="#000000"
+                  android:id="@+id/myInfo_edit_title"
+                  android:textSize="17sp"
+                  android:maxLines="1"
+                  android:text="编辑个人资料"
+                  android:gravity="center">
+        </TextView>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="保存"
+                android:layout_alignParentEnd="true"
+                android:textSize="15sp"
+                android:id="@+id/myInfo_edit_save"
+                android:layout_centerVertical="true"
+                android:textColor="#2aa515"
+                android:layout_marginEnd="20dp">
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/myInfo_edit_top_layout"
+                    android:id="@+id/myInfo_edit_centerLayout">
+        <View android:layout_width="match_parent"
+              android:layout_height="1px"
+              android:background="#e6e6e6"
+              android:id="@+id/myInfo_edit_line1"
+              android:layout_alignParentTop="true">
+        </View>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/myInfo_edit_line1"
+                android:id="@+id/edit_user_img_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="头像"
+                      android:textSize="16sp"
+                      android:layout_centerVertical="true"
+                      android:layout_marginStart="20dp">
+            </TextView>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="0dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp">
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:id="@+id/edit_user_img">
+                </ImageView>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1px"
+              android:background="#e6e6e6"
+              android:layout_below="@+id/edit_user_img_layout"
+              android:id="@+id/myInfo_edit_line2">
+        </View>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/myInfo_edit_line2"
+                android:id="@+id/edit_user_name_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="姓名"
+                      android:textSize="16sp"
+                      android:layout_centerVertical="true"
+                      android:layout_marginStart="20dp">
+            </TextView>
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:id="@+id/edit_user_name"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp">
+            </EditText>
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1px"
+              android:background="#e6e6e6"
+              android:layout_below="@+id/edit_user_name_layout"
+              android:id="@+id/myInfo_edit_line3">
+        </View>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/myInfo_edit_line3"
+                android:id="@+id/edit_user_gender_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="性别"
+                      android:textSize="16sp"
+                      android:layout_centerVertical="true"
+                      android:layout_marginStart="20dp">
+            </TextView>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/edit_user_gender"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp">
+            </TextView>
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1px"
+              android:background="#e6e6e6"
+              android:layout_below="@+id/edit_user_gender_layout"
+              android:id="@+id/myInfo_edit_line4">
+        </View>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/myInfo_edit_line4"
+                android:id="@+id/edit_user_university_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="大学"
+                      android:textSize="16sp"
+                      android:layout_centerVertical="true"
+                      android:layout_marginStart="20dp">
+            </TextView>
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:id="@+id/edit_user_university"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp">
+            </EditText>
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1px"
+              android:background="#e6e6e6"
+              android:layout_below="@+id/edit_user_university_layout"
+              android:id="@+id/myInfo_edit_line5">
+        </View>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/myInfo_edit_line5"
+                android:id="@+id/edit_user_email_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="电子邮箱"
+                      android:textSize="16sp"
+                      android:layout_centerVertical="true"
+                      android:layout_marginStart="20dp">
+            </TextView>
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:id="@+id/edit_user_email"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp">
+            </EditText>
+        </RelativeLayout>
+
+        <View android:layout_width="match_parent"
+              android:layout_height="1px"
+              android:background="#e6e6e6"
+              android:layout_below="@+id/edit_user_email_layout"
+              android:id="@+id/myInfo_edit_line6">
+        </View>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/myInfo_edit_line6"
+                android:id="@+id/edit_user_sign_layout">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="个人签名"
+                      android:textSize="16sp"
+                      android:layout_centerVertical="true"
+                      android:layout_marginStart="20dp">
+            </TextView>
+
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="一句话介绍自己"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:id="@+id/edit_user_sign"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp">
+            </EditText>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

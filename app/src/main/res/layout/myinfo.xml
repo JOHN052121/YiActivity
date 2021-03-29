@@ -3,13 +3,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffff"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
             android:id="@+id/myInfo_topLayout"
-            app:cardCornerRadius="4dp"
-            android:layout_height="200dp">
+            app:cardCornerRadius="0dp"
+            android:layout_height="240dp">
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -24,7 +24,7 @@
                     android:layout_height="80dp"
                     android:id="@+id/myInfo_image_card"
                     android:layout_marginStart="40dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="70dp"
                     app:cardElevation="0dp"
                     app:cardCornerRadius="40dp">
                 <ImageView
@@ -40,20 +40,20 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/myInfo_name"
                     android:textSize="15sp"
-                    android:textColor="#000000"
+                    android:textColor="#f8f8e8"
                     android:layout_margin="15dp"
                     android:layout_toEndOf="@+id/myInfo_image_card"
                     android:layout_alignTop="@+id/myInfo_image_card">
             </TextView>
 
             <Button
-                    android:layout_width="70dp"
+                    android:layout_width="80dp"
                     android:layout_height="30dp"
                     android:text="编辑资料"
                     android:textSize="12sp"
                     android:layout_below="@+id/myInfo_name"
                     android:id="@+id/edit_myInfo"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="30dp"
                     android:layout_toEndOf="@+id/myInfo_image_card"
                     android:background="@drawable/myinfo_edit_button">
             </Button>
