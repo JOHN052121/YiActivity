@@ -59,14 +59,9 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 final Activity activity = mActivityList.get(position);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DBOperation.updateBrowserCount(mUserId,activity.getActivityId());
-                    }
-                }).start();
+                ActivityAdapter.updateBrowserCount(activity.getActivityId());
                 Intent intent = new Intent(mContext, ActivityDetail.class);
-                intent.putExtra("activityId",activity.getActivityId());
+                intent.putExtra("activity_data",activity);
                 intent.putExtra("userId",mUserId);
                 mContext.startActivity(intent);
             }
@@ -78,8 +73,10 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Activity activity = mActivityList.get(position);
-        Glide.with(mContext).load(activity.getPoster()).into(holder.activityPoster);
-        holder.activityName.setText(activity.getActivityName());
+        Glide.with(mContext).load(IpAddress.URL_PIC+"activityPoster/" + activity.getPoster2()).into(holder.activityPoster);
+        String activityId = String.valueOf(position + 1);
+        String activityName = activityId +". " +activity.getActivityName();
+        holder.activityName.setText(activityName);
         holder.activityBrowser.setText(String.valueOf(activity.getBrowserCount()));
     }
 

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import com.next.easynavigation.view.EasyNavigationBar;
 import com.yiactivity.R;
 import com.yiactivity.Services.UpdateStateService;
 import com.yiactivity.mainScreen.searchActivity.VolunteerActivityList;
+import com.yiactivity.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.WHITE);
         }
         setContentView(R.layout.activity_main);
-        Intent intent = getIntent();
-        int data = intent.getIntExtra("user_id",0);
+        User user = (User) getIntent().getSerializableExtra("user_data");
         EasyNavigationBar navigationBar = findViewById(R.id.navigationBar);
+        int data = user.getUserId();
         fragments.add(new homeFragment(data));
         fragments.add(new activityListFragment(data));
         fragments.add(new activitySquareFragment(data));
-        fragments.add(new myInfoFragment(data));
+        fragments.add(new myInfoFragment(user));
 
         navigationBar.titleItems(tabText)
                 .normalIconItems(normalIcon)

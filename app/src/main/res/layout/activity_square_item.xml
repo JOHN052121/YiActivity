@@ -8,6 +8,7 @@
     </View>
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
                     android:id="@+id/activity_square_centerLayout"
                     android:layout_below="@+id/activity_square_line1">
         <androidx.cardview.widget.CardView
@@ -71,6 +72,17 @@
                    android:layout_toEndOf="@+id/activity_square_img2"
                    android:visibility="gone"
                    android:layout_marginStart="10dp">
+        </ImageView>
+
+        <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/delete_history"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:visibility="gone"
+                android:layout_alignTop="@+id/activity_square_userImg_card"
+                android:id="@+id/delete_trend">
         </ImageView>
     </RelativeLayout>
 </RelativeLayout>

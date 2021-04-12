@@ -10,6 +10,21 @@ public class ImageToDB {
 
     private static Bitmap bitmap;
     private static String string;
+
+
+    public static String bitmapTobyte(Bitmap bitmap){
+        //用户在活动中上传的图片转换成String进行存储
+        if(bitmap!=null){
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bytes = stream.toByteArray();// 转为byte数组
+            return Base64.encodeToString(bytes,Base64.DEFAULT);
+        }
+        else {
+            return null;
+        }
+    }
+
     public static byte[] stringToBitmap(String string) {
         //数据库中的String类型转换成Bitmap
         if (string != null) {

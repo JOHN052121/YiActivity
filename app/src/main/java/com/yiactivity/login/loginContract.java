@@ -7,13 +7,13 @@ import com.yiactivity.model.User;
 public interface loginContract {
 
     interface Presenter{
-        User LoginAsUser(String user, String password);
-        Sponsor LoginAsSponsor(String user, String password);
+        void LoginAsUser(String user, String password);
+        void LoginAsSponsor(String user, String password);
     }
 
     interface View{
-        void loginSuccess();
+        void loginSuccess(User user);
         void loginFailed();
-        void loginSuccessAsSponsor();
+        void loginSuccessAsSponsor(Sponsor sponsor);
     }
 }

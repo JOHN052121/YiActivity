@@ -2,25 +2,45 @@ package com.yiactivity.model;
 
 import android.graphics.Bitmap;
 
-public class Activity {
+import java.io.Serializable;
+
+public class Activity implements Serializable {
     private int activityId;
     private String activityName;
     private String time;
     private String address;
-    private String addressContent;
+    private String activityContent;
     private String type;
     private int state;
     private int sponsorId;
     private byte[] poster;
     private int browserCount;
-    private int loadMoreType;
+    private int participant;
+    private String tag;
+    private String poster2;
 
-    public int getLoadMoreType() {
-        return loadMoreType;
+    public String getPoster2() {
+        return poster2;
     }
 
-    public void setLoadMoreType(int loadMoreType) {
-        this.loadMoreType = loadMoreType;
+    public void setPoster2(String poster2) {
+        this.poster2 = poster2;
+    }
+
+    public int getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(int participant) {
+        this.participant = participant;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public int getBrowserCount() {
@@ -64,11 +84,11 @@ public class Activity {
     }
 
     public String getAddressContent() {
-        return addressContent;
+        return activityContent;
     }
 
     public void setAddressContent(String addressContent) {
-        this.addressContent = addressContent;
+        this.activityContent = addressContent;
     }
 
     public String getType() {

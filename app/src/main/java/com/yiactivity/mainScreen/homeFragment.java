@@ -9,10 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.gson.JsonArray;
 import com.yiactivity.R;
 import com.yiactivity.Services.UpdateStateService;
 import com.yiactivity.Utils.*;
@@ -31,6 +29,12 @@ import com.yiactivity.model.Sponsor;
 import com.yiactivity.searchTopActivity.SearchActivity;
 import com.youth.banner.Banner;
 import com.yiactivity.mainScreen.typeActivity.diffTypeActivity;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -47,7 +51,6 @@ public class homeFragment extends Fragment {
     private ArrayList<Activity> activityArrayList_school = new ArrayList<>();
     private ActivityAdapter activityAdapter_recommend;
     private ActivityAdapter activityAdapter_volunteer;
-    private Search_all_activityAdapter activityAdapter_school;
     private PopularAdapter activityAdapter_popular;
     private sponsorRandomAdapter sponsorRandomAdapter;
     private LoadMoreAdapter loadMoreAdapter;
@@ -70,8 +73,10 @@ public class homeFragment extends Fragment {
     private ImageView competiton;
     private ImageView community;
     private ScrollView scrollView;
-    private List<Activity> currentArrayList = new ArrayList<>();
-    private int end = 4;
+    private List<Activity> currentList = new ArrayList<>();
+    private int begin = 1;
+    private int end = 5;
+    private int count = 6;
 
     public homeFragment(int userId) {
         mUserId = userId;
@@ -107,7 +112,13 @@ public class homeFragment extends Fragment {
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         scrollView = view.findViewById(R.id.home_fragment_scroll);
 
-        getRecommendActivity();
+
+        getRecommend();
+        getVolunteer();
+        getPopular();
+        getSchool();
+        getSponsor();
+        homeProgressBar.setVisibility(View.GONE);
 
 
         //顶部搜索框通过intent跳转至searchActivity
@@ -153,7 +164,9 @@ public class homeFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getRecommendActivity();
+                sponsorArrayList.clear();
+                getSponsor();
+                homeProgressBar.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
             }
         });
@@ -222,17 +235,6 @@ public class homeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Bitmap bitmap;
-                bannerImgs = DBOperation.getBannerImg();
-                for (String bannerImg : bannerImgs) {
-                    bitmap = ImageToDB.stringToBitmap(bannerImg);
-                    bannerImgs_bit.add(bitmap);
-                }
-            }
-        }).start();*/
     }
 
     @Override
@@ -240,94 +242,385 @@ public class homeFragment extends Fragment {
         super.onPause();
     }
 
-    private void getRecommendActivity() {
-        new Thread(new Runnable() {
+    private void getRecommend(){
+        OkHttpClient client  = new OkHttpClient();
+        RequestBody requestBody =new FormBody.Builder()
+                .add("begin","1")
+                .add("end","8")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://192.168.1.111:8080/SSM_war_exploded/activity/allActivity")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                activityArrayList_recommend = DBOperation.getRecommendActivity();
-                //activityArrayList_volunteer = DBOperation.getRecommendActivity();
-                activityArrayList_popular = DBOperation.getPopularActivity();
-                sponsorArrayList = DBOperation.getRandomSponsor();
-                activityArrayList_school = DBOperation.getSchoolActivity(mUserId);
-
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        GridLayoutManager layoutManager_recommend = new GridLayoutManager(getContext(), 2);
-                        layoutManager_recommend.setOrientation(RecyclerView.HORIZONTAL);
-                        recyclerView_recommend.setLayoutManager(layoutManager_recommend);
-                        activityAdapter_recommend = new ActivityAdapter(activityArrayList_recommend, mUserId);
-                        recyclerView_recommend.setAdapter(activityAdapter_recommend);
-
-                        GridLayoutManager layoutManager_volunteer = new GridLayoutManager(getContext(), 2);
-                        layoutManager_volunteer.setOrientation(RecyclerView.HORIZONTAL);
-                        recyclerView_volunteer.setLayoutManager(layoutManager_volunteer);
-                        activityAdapter_volunteer = new ActivityAdapter(activityArrayList_recommend, mUserId);
-                        recyclerView_volunteer.setAdapter(activityAdapter_volunteer);
-
-                        LinearLayoutManager layoutManager_randomSponsor = new LinearLayoutManager(getContext());
-                        layoutManager_randomSponsor.setOrientation(RecyclerView.HORIZONTAL);
-                        recyclerView_randomSponsor.setLayoutManager(layoutManager_randomSponsor);
-                        sponsorRandomAdapter = new sponsorRandomAdapter(sponsorArrayList,mUserId);
-                        recyclerView_randomSponsor.setAdapter(sponsorRandomAdapter);
-
-                        LinearLayoutManager layoutManager_popular = new LinearLayoutManager(getContext());
-                        layoutManager_popular.setOrientation(RecyclerView.VERTICAL);
-                        recyclerView_popular.setLayoutManager(layoutManager_popular);
-                        recyclerView_popular.setNestedScrollingEnabled(false);
-                        activityAdapter_popular = new PopularAdapter(activityArrayList_popular,mUserId);
-                        recyclerView_popular.setAdapter(activityAdapter_popular);
-
-                        LinearLayoutManager layoutManager_school = new LinearLayoutManager(getContext());
-                        layoutManager_school.setOrientation(RecyclerView.VERTICAL);
-                        recyclerView_school.setLayoutManager(layoutManager_school);
-                        recyclerView_school.setNestedScrollingEnabled(false);
-                        //activityAdapter_school = new Search_all_activityAdapter(activityArrayList_school,mUserId);
-                        //recyclerView_school.setAdapter(activityAdapter_school);
-                        if(activityArrayList_school.size() < 6) {
-                            loadMoreAdapter = new LoadMoreAdapter(activityArrayList_school, mUserId);
-                            currentArrayList = activityArrayList_school;
-                        }
-                        else{
-                            currentArrayList = activityArrayList_school.subList(0,4);
-                            loadMoreAdapter = new LoadMoreAdapter(currentArrayList,mUserId);
-                        }
-                        recyclerView_school.setAdapter(loadMoreAdapter);
-                        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                            @Override
-                            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                                View contentView = scrollView.getChildAt(0);
-                                if(contentView != null && contentView.getMeasuredHeight() == (scrollView.getScrollY() + scrollView.getHeight())){
-                                    loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING);
-
-                                    if (currentArrayList.size() < activityArrayList_school.size()) {
-                                        if(activityArrayList_school.size() - currentArrayList.size() < 5){
-                                            currentArrayList = activityArrayList_school;
-                                        }
-                                        else {
-                                            end = end + 5;
-                                            currentArrayList = activityArrayList_school.subList(0,end);
-                                        }
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_COMPLETE);
-                                            }
-                                        });
-                                    } else {
-                                        // 显示加载到底的提示
-                                        loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_END);
-                                    }
-                                }
-                            }
-                        });
-
-                        homeProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(),"连接失败",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
-        }).start();
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try{
+                    final JSONArray jsonArray = new JSONArray(response.body().string());
+                    for(int i = 0;i<jsonArray.length();i++){
+                        Activity activity = new Activity();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        activity.setActivityId(jsonObject.getInt("activityId"));
+                        activity.setActivityName(jsonObject.getString("activityName"));
+                        activity.setTime(jsonObject.getString("time"));
+                        activity.setAddress(jsonObject.getString("address"));
+                        activity.setAddressContent(jsonObject.getString("activityContent"));
+                        activity.setType(jsonObject.getString("type"));
+                        activity.setState(jsonObject.getInt("state"));
+                        activity.setSponsorId(jsonObject.getInt("sponsorId"));
+                        activity.setPoster2(jsonObject.getString("poster"));
+                        activity.setBrowserCount(jsonObject.getInt("browserCount"));
+                        activity.setTag(jsonObject.getString("tag"));
+                        activity.setParticipant(jsonObject.getInt("participant"));
+                        activityArrayList_recommend.add(activity);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GridLayoutManager layoutManager_recommend = new GridLayoutManager(getContext(), 2);
+                            layoutManager_recommend.setOrientation(RecyclerView.HORIZONTAL);
+                            recyclerView_recommend.setLayoutManager(layoutManager_recommend);
+                            activityAdapter_recommend = new ActivityAdapter(activityArrayList_recommend, mUserId);
+                            recyclerView_recommend.setAdapter(activityAdapter_recommend);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
+    private void getVolunteer(){
+        OkHttpClient client  = new OkHttpClient();
+        RequestBody requestBody =new FormBody.Builder()
+                .add("type","志愿活动类")
+                .add("begin","1")
+                .add("end","8")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://192.168.1.111:8080/SSM_war_exploded/activity/typeActivity")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(),"连接失败",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try{
+                    final JSONArray jsonArray = new JSONArray(response.body().string());
+                    for(int i = 0;i<jsonArray.length();i++){
+                        Activity activity = new Activity();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        activity.setActivityId(jsonObject.getInt("activityId"));
+                        activity.setActivityName(jsonObject.getString("activityName"));
+                        activity.setTime(jsonObject.getString("time"));
+                        activity.setAddress(jsonObject.getString("address"));
+                        activity.setAddressContent(jsonObject.getString("activityContent"));
+                        activity.setType(jsonObject.getString("type"));
+                        activity.setState(jsonObject.getInt("state"));
+                        activity.setSponsorId(jsonObject.getInt("sponsorId"));
+                        activity.setPoster2(jsonObject.getString("poster"));
+                        activity.setBrowserCount(jsonObject.getInt("browserCount"));
+                        activity.setTag(jsonObject.getString("tag"));
+                        activity.setParticipant(jsonObject.getInt("participant"));
+                        activityArrayList_volunteer.add(activity);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            GridLayoutManager layoutManager_volunteer = new GridLayoutManager(getContext(), 2);
+                            layoutManager_volunteer.setOrientation(RecyclerView.HORIZONTAL);
+                            recyclerView_volunteer.setLayoutManager(layoutManager_volunteer);
+                            activityAdapter_volunteer = new ActivityAdapter(activityArrayList_volunteer, mUserId);
+                            recyclerView_volunteer.setAdapter(activityAdapter_volunteer);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getPopular(){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://192.168.1.111:8080/SSM_war_exploded/activity/popularActivity")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(),"连接失败请重新刷新",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try {
+                    final JSONArray jsonArray = new JSONArray(response.body().string());
+                    for(int i = 0;i<jsonArray.length();i++){
+                        Activity activity = new Activity();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        activity.setActivityId(jsonObject.getInt("activityId"));
+                        activity.setActivityName(jsonObject.getString("activityName"));
+                        activity.setTime(jsonObject.getString("time"));
+                        activity.setAddress(jsonObject.getString("address"));
+                        activity.setAddressContent(jsonObject.getString("activityContent"));
+                        activity.setType(jsonObject.getString("type"));
+                        activity.setState(jsonObject.getInt("state"));
+                        activity.setSponsorId(jsonObject.getInt("sponsorId"));
+                        activity.setPoster2(jsonObject.getString("poster"));
+                        activity.setBrowserCount(jsonObject.getInt("browserCount"));
+                        activity.setTag(jsonObject.getString("tag"));
+                        activity.setParticipant(jsonObject.getInt("participant"));
+                        activityArrayList_popular.add(activity);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LinearLayoutManager layoutManager_popular = new LinearLayoutManager(getContext());
+                            layoutManager_popular.setOrientation(RecyclerView.VERTICAL);
+                            recyclerView_popular.setLayoutManager(layoutManager_popular);
+                            recyclerView_popular.setNestedScrollingEnabled(false);
+                            activityAdapter_popular = new PopularAdapter(activityArrayList_popular,mUserId);
+                            recyclerView_popular.setAdapter(activityAdapter_popular);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getSchool(){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody =new FormBody.Builder()
+                .add("userId",String.valueOf(mUserId))
+                .add("begin","1")
+                .add("end","5")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://192.168.1.111:8080/SSM_war_exploded/activity/schoolActivity")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(),"连接失败请重新刷新页面",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try{
+                    final JSONArray jsonArray = new JSONArray(response.body().string());
+                    for(int i = 0;i<jsonArray.length();i++){
+                        Activity activity = new Activity();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        activity.setActivityId(jsonObject.getInt("activityId"));
+                        activity.setActivityName(jsonObject.getString("activityName"));
+                        activity.setTime(jsonObject.getString("time"));
+                        activity.setAddress(jsonObject.getString("address"));
+                        activity.setAddressContent(jsonObject.getString("activityContent"));
+                        activity.setType(jsonObject.getString("type"));
+                        activity.setState(jsonObject.getInt("state"));
+                        activity.setSponsorId(jsonObject.getInt("sponsorId"));
+                        activity.setPoster2(jsonObject.getString("poster"));
+                        activity.setBrowserCount(jsonObject.getInt("browserCount"));
+                        activity.setTag(jsonObject.getString("tag"));
+                        activity.setParticipant(jsonObject.getInt("participant"));
+                        activityArrayList_school.add(activity);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LinearLayoutManager layoutManager_school = new LinearLayoutManager(getContext());
+                            layoutManager_school.setOrientation(RecyclerView.VERTICAL);
+                            recyclerView_school.setLayoutManager(layoutManager_school);
+                            recyclerView_school.setNestedScrollingEnabled(false);
+                            loadMoreAdapter = new LoadMoreAdapter(activityArrayList_school, mUserId);
+                            recyclerView_school.setAdapter(loadMoreAdapter);
+
+                            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                                @Override
+                                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                                    View contentView = scrollView.getChildAt(0);
+                                    if(contentView != null && contentView.getMeasuredHeight() == (scrollView.getScrollY() + scrollView.getHeight())){
+                                        loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING);
+                                        if(activityArrayList_school.size() < 5){
+                                            loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_END);
+                                        }
+                                        else{
+                                            if (activityArrayList_school.size() < count) {
+                                                begin = begin + 5;
+                                                end = end + 5;
+                                                OkHttpClient client1 = new OkHttpClient();
+                                                RequestBody requestBody1 = new FormBody.Builder()
+                                                        .add("userId",String.valueOf(mUserId))
+                                                        .add("begin",String.valueOf(begin))
+                                                        .add("end",String.valueOf(end))
+                                                        .build();
+                                                Request request1 = new Request.Builder()
+                                                        .url("http://192.168.1.111:8080/SSM_war_exploded/activity/schoolActivity")
+                                                        .post(requestBody1)
+                                                        .build();
+                                                client1.newCall(request1).enqueue(new Callback() {
+                                                    @Override
+                                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                                        getActivity().runOnUiThread(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                Toast.makeText(getContext(),"加载数据失败，请检查网络或者重新加载",Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                                    }
+
+                                                    @Override
+                                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                                        try{
+                                                            JSONArray jsonArray1 = new JSONArray(response.body().string());
+                                                            for(int i = 0;i<jsonArray1.length();i++){
+                                                                Activity activity = new Activity();
+                                                                JSONObject jsonObject = jsonArray1.getJSONObject(i);
+                                                                activity.setActivityId(jsonObject.getInt("activityId"));
+                                                                activity.setActivityName(jsonObject.getString("activityName"));
+                                                                activity.setTime(jsonObject.getString("time"));
+                                                                activity.setAddress(jsonObject.getString("address"));
+                                                                activity.setAddressContent(jsonObject.getString("activityContent"));
+                                                                activity.setType(jsonObject.getString("type"));
+                                                                activity.setState(jsonObject.getInt("state"));
+                                                                activity.setSponsorId(jsonObject.getInt("sponsorId"));
+                                                                activity.setPoster2(jsonObject.getString("poster"));
+                                                                activity.setBrowserCount(jsonObject.getInt("browserCount"));
+                                                                activity.setTag(jsonObject.getString("tag"));
+                                                                activity.setParticipant(jsonObject.getInt("participant"));
+                                                                currentList.add(activity);
+                                                            }
+                                                            getActivity().runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    if(currentList.size() > 4){
+                                                                        activityArrayList_school.addAll(currentList);
+                                                                        count = count + currentList.size();
+                                                                        loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_COMPLETE);
+                                                                        currentList.clear();
+                                                                    }
+                                                                    else {
+                                                                        if(currentList.size() == 0){
+                                                                            loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_END);
+                                                                        }
+                                                                        else {
+                                                                            activityArrayList_school.addAll(currentList);
+                                                                            count = activityArrayList_school.size();
+                                                                            loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_COMPLETE);
+                                                                            currentList.clear();
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+                                                        }catch (Exception e){
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                // 显示加载到底的提示
+                                                loadMoreAdapter.setLoadState(loadMoreAdapter.LOADING_END);
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getSponsor(){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://192.168.1.111:8080/SSM_war_exploded/sponsor/getSponsorRandom")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(),"连接失败请重新刷新页面",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try{
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    for(int i=0;i<jsonArray.length();i++){
+                        Sponsor sponsor = new Sponsor();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        sponsor.setSponsorId(jsonObject.getInt("sponsorId"));
+                        sponsor.setSpon_Name(jsonObject.getString("spon_Name"));
+                        sponsor.setOrg_Name(jsonObject.getString("org_Name"));
+                        sponsor.setPassword(jsonObject.getString("password"));
+                        sponsor.setUniversity(jsonObject.getString("university"));
+                        sponsor.setPhoneNum(jsonObject.getString("phoneNum"));
+                        sponsor.setEmail(jsonObject.getString("email"));
+                        sponsor.setSponsorImage1(jsonObject.getString("sponsorImage"));
+                        sponsor.setSponsorIntro(jsonObject.getString("sponIntro"));
+                        sponsor.setActivityNumOfSponsor(jsonObject.getInt("activityNum"));
+                        sponsor.setFuns(jsonObject.getInt("funs"));
+                        sponsorArrayList.add(sponsor);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LinearLayoutManager layoutManager_randomSponsor = new LinearLayoutManager(getContext());
+                            layoutManager_randomSponsor.setOrientation(RecyclerView.HORIZONTAL);
+                            recyclerView_randomSponsor.setLayoutManager(layoutManager_randomSponsor);
+                            sponsorRandomAdapter = new sponsorRandomAdapter(sponsorArrayList,mUserId);
+                            recyclerView_randomSponsor.setAdapter(sponsorRandomAdapter);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,9 +19,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.User;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ParticipantFragment extends Fragment {
@@ -67,33 +74,68 @@ public class ParticipantFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getParticipant(mActivityId);
     }
 
     private void getParticipant(final int activityId){
-        new Thread(new Runnable() {
+        OkHttpClient client  = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("activityId",String.valueOf(activityId))
+                .build();
+        Request request = new Request.Builder()
+                .url(IpAddress.URL + "user/getUserByActivityId")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                userArrayList = DBOperation.getParticipant(activityId);
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-                        layoutManager.setOrientation(RecyclerView.VERTICAL);
-                        recyclerView.setLayoutManager(layoutManager);
-                        participantAdapter = new ParticipantAdapter(userArrayList,mActivityId);
-                        recyclerView.setAdapter(participantAdapter);
-                        Intent intent = new Intent("getEnrollNum");
-                        intent.putExtra("enrolled_number",participantAdapter.getItemCount());
-                        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+                        Toast.makeText(getContext(),"连接失败，请检查网络",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
-        }).start();
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try{
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    for(int i=0;i<jsonArray.length();i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        User user = new User();
+                        user.setUserId(jsonObject.getInt("userId"));
+                        user.setUserName(jsonObject.getString("userName"));
+                        user.setPhoneNum(jsonObject.getString("phoneNum"));
+                        user.setGender(jsonObject.getString("gender"));
+                        user.setUniversity(jsonObject.getString("university"));
+                        user.setEmail(jsonObject.getString("email"));
+                        user.setUserImage(jsonObject.getString("image"));
+                        user.setSubscribeNum(jsonObject.getInt("subscribeNum"));
+                        user.setCollectionNum(jsonObject.getInt("collectionNum"));
+                        user.setTrendNum(jsonObject.getInt("trendNum"));
+                        user.setStatement(jsonObject.getInt("statement"));
+                        userArrayList.add(user);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                            layoutManager.setOrientation(RecyclerView.VERTICAL);
+                            recyclerView.setLayoutManager(layoutManager);
+                            participantAdapter = new ParticipantAdapter(userArrayList,mActivityId);
+                            recyclerView.setAdapter(participantAdapter);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
     public void onResume() {
+        userArrayList.clear();
         super.onResume();
         getParticipant(mActivityId);
     }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,10 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.Utils.TrendAdapter;
 import com.yiactivity.model.Trend;
 import com.yiactivity.releaseTrends.ReleaseTrend;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class activitySquareFragment extends Fragment {
@@ -54,26 +61,57 @@ public class activitySquareFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getTrends(mUserId);
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        trends.clear();
+        getTrends(mUserId);
+    }
+
     private void getTrends(final int userId){
-        new Thread(new Runnable() {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(IpAddress.URL + "trend/getTrend")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                trends = DBOperation.getTrend();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-                        layoutManager.setOrientation(RecyclerView.VERTICAL);
-                        recyclerView.setLayoutManager(layoutManager);
-                        adapter = new TrendAdapter(trends,userId);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Toast.makeText(getContext(),"连接失败，请检查网络",Toast.LENGTH_SHORT).show();
             }
-        }).start();
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try{
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    for(int i=0;i<jsonArray.length();i++){
+                        Trend trend = new Trend();
+                        JSONObject jsonObject  = jsonArray.getJSONObject(i);
+                        trend.setId(jsonObject.getInt("id"));
+                        trend.setUserName(jsonObject.getString("userName"));
+                        trend.setContent(jsonObject.getString("content"));
+                        trend.setImage(jsonObject.getString("image"));
+                        trend.setUserImg(jsonObject.getString("userImg"));
+                        trend.setUserId(jsonObject.getInt("userId"));
+                        trends.add(trend);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                            layoutManager.setOrientation(RecyclerView.VERTICAL);
+                            recyclerView.setLayoutManager(layoutManager);
+                            adapter = new TrendAdapter(trends,userId,0);
+                            recyclerView.setAdapter(adapter);
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 }

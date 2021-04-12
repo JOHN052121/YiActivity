@@ -7,13 +7,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.User;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 
 public class ParticipantDetail extends AppCompatActivity {
 
@@ -27,7 +33,6 @@ public class ParticipantDetail extends AppCompatActivity {
     private User user;
     private Button agree_button;
     private Button disagree_button;
-    private int mUserId;
     private int mActivityId;
     private int user_statement;
 
@@ -47,10 +52,10 @@ public class ParticipantDetail extends AppCompatActivity {
         //初始化控件
         init();
         Intent intent = getIntent();
-        mUserId = intent.getIntExtra("user_id",0);
+        user = (User) intent.getSerializableExtra("user_data");
         mActivityId = intent.getIntExtra("activity_id",0);
-        user_statement = intent.getIntExtra("user_statement",0);
-        getParticipantInfo(mUserId);
+        user_statement = user.getStatement();
+        getParticipantInfo(user);
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +69,39 @@ public class ParticipantDetail extends AppCompatActivity {
             agree_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new Thread(new Runnable() {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody requestBody = new FormBody.Builder()
+                            .add("statement","2")
+                            .add("activityId",String.valueOf(mActivityId))
+                            .add("userId",String.valueOf(user.getUserId()))
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(IpAddress.URL + "activity/updateEnrollState")
+                            .post(requestBody)
+                            .build();
+                    client.newCall(request).enqueue(new Callback() {
                         @Override
-                        public void run() {
-                            DBOperation.updateStatement(mUserId,mActivityId,1);
-                            finish();
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(ParticipantDetail.this, "连接失败，请检查网络", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    }).start();
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(ParticipantDetail.this,"已同意",Toast.LENGTH_SHORT).show();
+                                    agree_button.setVisibility(View.INVISIBLE);
+                                    disagree_button.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    });
                 }
             });
 
@@ -78,14 +109,39 @@ public class ParticipantDetail extends AppCompatActivity {
             disagree_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    new Thread(new Runnable() {
+                    OkHttpClient client = new OkHttpClient();
+                    RequestBody requestBody = new FormBody.Builder()
+                            .add("activityId",String.valueOf(mActivityId))
+                            .add("userId",String.valueOf(user.getUserId()))
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(IpAddress.URL + "activity/deleteEnroll")
+                            .post(requestBody)
+                            .build();
+                    client.newCall(request).enqueue(new Callback() {
                         @Override
-                        public void run() {
-                            DBOperation.updateStatement(mUserId,mActivityId,2);
-                            finish();
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(ParticipantDetail.this, "连接失败，请检查网络", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    }).start();
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(ParticipantDetail.this,"已拒绝",Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            });
+                        }
+                    });
                 }
+
             });
         }
         else {
@@ -108,23 +164,12 @@ public class ParticipantDetail extends AppCompatActivity {
         disagree_button = findViewById(R.id.participant_detail_disagree);
     }
 
-    private void getParticipantInfo(final int userId){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                user = DBOperation.getUserInfo(userId);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        participant_email.setText(user.getEmail());
-                        participant_gender.setText(user.getGender());
-                        participant_name.setText(user.getUserName());
-                        participant_phoneNum.setText(user.getPhoneNum());
-                        participant_university.setText(user.getUniversity());
-                        Glide.with(ParticipantDetail.this).load(user.getImage()).into(participant_image);
-                    }
-                });
-            }
-        }).start();
+    private void getParticipantInfo(final User user){
+        participant_email.setText(user.getEmail());
+        participant_gender.setText(user.getGender());
+        participant_name.setText(user.getUserName());
+        participant_phoneNum.setText(user.getPhoneNum());
+        participant_university.setText(user.getUniversity());
+        Glide.with(ParticipantDetail.this).load(IpAddress.URL_PIC + "userImage/" + user.getUserImage()).into(participant_image);
     }
 }

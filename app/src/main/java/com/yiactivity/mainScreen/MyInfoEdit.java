@@ -12,6 +12,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.User;
 
 public class MyInfoEdit extends AppCompatActivity {
@@ -24,8 +25,7 @@ public class MyInfoEdit extends AppCompatActivity {
     private EditText user_email;
     private TextView save;
     private ImageView back_icon;
-    private int mUserId;
-    private User user;
+    private User mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +42,10 @@ public class MyInfoEdit extends AppCompatActivity {
         init();
 
         //获取userId
-        Intent intent =getIntent();
-        mUserId = intent.getIntExtra("user_id",0);
+        mUser = (User)getIntent().getSerializableExtra("user_data");
 
         // 展示个人信息
-        showMyInfo(mUserId);
+        showMyInfo(mUser);
 
         //返回按钮监听器
         back_icon.setOnClickListener(new View.OnClickListener() {
@@ -76,22 +75,11 @@ public class MyInfoEdit extends AppCompatActivity {
         save = findViewById(R.id.myInfo_edit_save);
     }
 
-    private void showMyInfo(final int userId){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-               user = DBOperation.getUserInfo(userId);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.with(MyInfoEdit.this).load(user.getImage()).into(user_img);
-                        user_email.setText(user.getEmail());
-                        user_gender.setText(user.getGender());
-                        user_name.setText(user.getUserName());
-                        user_university.setText(user.getUniversity());
-                    }
-                });
-            }
-        }).start();
+    private void showMyInfo(final User user){
+        Glide.with(MyInfoEdit.this).load(IpAddress.URL_PIC+"userImage/"+user.getUserImage()).into(user_img);
+        user_email.setText(user.getEmail());
+        user_gender.setText(user.getGender());
+        user_name.setText(user.getUserName());
+        user_university.setText(user.getUniversity());
     }
 }

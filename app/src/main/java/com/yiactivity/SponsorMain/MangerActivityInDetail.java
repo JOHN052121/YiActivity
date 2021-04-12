@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.yiactivity.R;
+import com.yiactivity.model.Activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,12 @@ public class MangerActivityInDetail extends AppCompatActivity {
     private int mSponsorId;
     private int mActivityId;
     private String mActivityName;
-    private String mActivityAddress;
-    private String mActivityTime;
     private EasyNavigationBar easyNavigationBar;
     private String[] tabText = {"数据","参与者"};
     private int[] normalIcon = {R.drawable.data,R.drawable.participant};
     private int[] selectIcon = {R.drawable.data_buttoned,R.drawable.participant_buttoned};
     private List<Fragment> fragments = new ArrayList<>();
+    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +38,15 @@ public class MangerActivityInDetail extends AppCompatActivity {
                             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(getResources().getColor(R.color.myColor));
         }
-        //获取传过来的sponsorId,和活动的id、名称、地址、时间
+        //获取传过来的sponsorId,和activity对象
         Intent intent = getIntent();
         mSponsorId = intent.getIntExtra("sponsor_id",0);
-        mActivityId = intent.getIntExtra("activityId",0);
-        mActivityAddress = intent.getStringExtra("activityAddress");
-        mActivityName = intent.getStringExtra("activityName");
-        mActivityTime = intent.getStringExtra("activityTime");
+        activity = (Activity) intent.getSerializableExtra("activity_data");
 
         //将两个fragment的实例加入fragment列表
-        fragments.add(new DataFragment(mSponsorId,mActivityId,mActivityAddress,mActivityName,mActivityTime));
+        mActivityId = activity.getActivityId();
+        mActivityName = activity.getActivityName();
+        fragments.add(new DataFragment(mSponsorId,activity));
         fragments.add(new ParticipantFragment(mSponsorId,mActivityId,mActivityName));
 
         //设置底部导航栏

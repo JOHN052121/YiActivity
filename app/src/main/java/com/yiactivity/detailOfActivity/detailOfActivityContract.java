@@ -6,9 +6,9 @@ import com.yiactivity.model.Sponsor;
 public interface detailOfActivityContract {
 
     interface Presenter {
-        void getDetailOfActivity(int activityId);
+        void getDetailOfActivity(Activity activity);
 
-        void getEnrollState(int activityId, int userId);
+        void getEnrollState(int activityId, int userId,int activityState);
 
         void getSponsorInfo(int sponsorId);
     }

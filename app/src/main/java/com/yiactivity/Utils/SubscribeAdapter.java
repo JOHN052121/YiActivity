@@ -5,27 +5,23 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.detailOfActivity.ActivityDetail;
+import com.yiactivity.detailOfSponsor.SponsorDetail;
 import com.yiactivity.model.Activity;
+import com.yiactivity.model.Sponsor;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-
+public class SubscribeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context mContext;
 
-    private List<Activity> mActivityList;
+    private List<Sponsor> mSponsorList;
 
     private int mUserId;
     // 普通布局
@@ -41,8 +37,8 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     // 加载到底
     public final int LOADING_END = 3;
 
-    public LoadMoreAdapter(List<Activity> dataList,int userId) {
-        mActivityList = dataList;
+    public SubscribeAdapter(List<Sponsor> dataList,int userId) {
+        mSponsorList = dataList;
         mUserId = userId;
     }
 
@@ -68,15 +64,19 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.all_activity_list_crad, parent, false);
             final RecyclerViewHolder holder = new RecyclerViewHolder(view);
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
+            holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = holder.getAdapterPosition();
-                    final Activity activity = mActivityList.get(position);
-                    ActivityAdapter.updateBrowserCount(activity.getActivityId());
-                    Intent intent = new Intent(mContext, ActivityDetail.class);
+                    final Sponsor sponsor = mSponsorList.get(position);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    }).start();
+                    Intent intent = new Intent(mContext, SponsorDetail.class);
                     intent.putExtra("userId", mUserId);
-                    intent.putExtra("activity_data",activity);
                     mContext.startActivity(intent);
                 }
             });
@@ -85,7 +85,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (viewType == TYPE_FOOTER) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.loading_more, parent, false);
-            return new FootViewHolder(view);
+            return new SubscribeAdapter.FootViewHolder(view);
         }
         return null;
     }
@@ -94,12 +94,10 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof RecyclerViewHolder) {
             RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
-            Activity activity = mActivityList.get(position);
-            recyclerViewHolder.activityName.setText(activity.getActivityName());
-            Glide.with(mContext).load(IpAddress.URL_PIC+"activityPoster/" + activity.getPoster2()).into( recyclerViewHolder.activityPoster);
-            recyclerViewHolder.activityType.setText(activity.getType().substring(0,4));
-            recyclerViewHolder.activityTime.setText(activity.getTime());
-            recyclerViewHolder.activityTag.setText(activity.getTag());
+            Sponsor sponsor = mSponsorList.get(position);
+            Glide.with(mContext).load(sponsor.getSponsorImage()).into(recyclerViewHolder.sponsorImage);
+            recyclerViewHolder.sponsorIntro.setText(sponsor.getOrg_Name());
+            recyclerViewHolder.sponsorIntro.setText(sponsor.getSponsorIntro());
         } else if (holder instanceof FootViewHolder) {
             FootViewHolder footViewHolder = (FootViewHolder) holder;
             switch (loadState) {
@@ -129,30 +127,30 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return mActivityList.size() + 1;
+        return mSponsorList.size() + 1;
     }
 
-    private class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    private static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        CardView cardView;
-        ImageView activityPoster;
-        TextView activityName;
-        TextView activityType;
-        TextView activityTime;
-        TextView activityTag;
+        RelativeLayout relativeLayout;
+        ImageView sponsorImage;
+        TextView sponsorName;
+        TextView sponsorIntro;
+        TextView sponsorFuns;
+        TextView sponsorActivityNum;
 
         RecyclerViewHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView;
-            activityPoster = itemView.findViewById(R.id.all_activity_image);
-            activityName = itemView.findViewById(R.id.all_activity_name);
-            activityType =itemView.findViewById(R.id.all_activity_type);
-            activityTime = itemView.findViewById(R.id.all_activity_time);
-            activityTag = itemView.findViewById(R.id.all_activity_list_tag);
+            relativeLayout = (RelativeLayout) itemView;
+            sponsorImage = itemView.findViewById(R.id.subscribe_item_image);
+            sponsorName = itemView.findViewById(R.id.subscribe_item_name);
+            sponsorIntro =itemView.findViewById(R.id.subscribe_item_intro);
+            sponsorFuns = itemView.findViewById(R.id.subscribe_item_funs_text);
+            sponsorActivityNum = itemView.findViewById(R.id.subscribe_item_activity_text);
         }
     }
 
-    private class FootViewHolder extends RecyclerView.ViewHolder {
+    private static class FootViewHolder extends RecyclerView.ViewHolder {
 
         ProgressBar pbLoading;
         TextView tvLoading;
@@ -176,3 +174,4 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 }
+

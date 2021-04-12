@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.detailOfUser.DetailUserMain;
 import com.yiactivity.mainScreen.ActivityMyInfo.EnrolledActivity;
 import com.yiactivity.mainScreen.ActivityMyInfo.SignedActivity;
@@ -36,6 +37,7 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
     private ImageView myInfo_image;
     private TextView myInfo_name;
     private User user;
+    private User mUser;
     private Button exit_button;
     private ImageView activity_enrolled;
     private ImageView activity_signing;
@@ -43,8 +45,8 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
     private ImageView activity_thinked;
     private Button edit_button;
 
-    public myInfoFragment(int userId){
-        mUserId = userId;
+    public myInfoFragment(User user){
+        mUser = user;
     }
 
     @Nullable
@@ -66,7 +68,7 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),MyInfoEdit.class);
-                intent.putExtra("user_id",mUserId);
+                intent.putExtra("user_data",mUser);
                 startActivity(intent);
             }
         });
@@ -89,7 +91,7 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), DetailUserMain.class);
-                intent.putExtra("user_id",mUserId);
+                intent.putExtra("user_id",mUser.getUserId());
                 startActivity(intent);
             }
         });
@@ -127,27 +129,13 @@ public class myInfoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showUserInfo();
-
+        showUserInfo(mUser);
     }
 
-    private void showUserInfo(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                user = DBOperation.getUserInfo(mUserId);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        myInfo_name.setText(user.getUserName());
-                        Glide.with(myInfoFragment.this).load(user.getImage()).into(myInfo_image);
-                        Glide.with(getContext()).load(user.getImage())
-                                .apply(bitmapTransform(new BlurTransformation(25))).into(bigImage);
-                    }
-                });
-
-            }
-        }).start();
+    private void showUserInfo(User user){
+        myInfo_name.setText(user.getUserName());
+        Glide.with(getContext()).load(IpAddress.URL_PIC+"userImage/"+user.getUserImage()).into(myInfo_image);
+        Glide.with(getContext()).load(IpAddress.URL_PIC+"userImage/"+user.getUserImage()).apply(bitmapTransform(new BlurTransformation(25))).into(bigImage);
     }
 
 }

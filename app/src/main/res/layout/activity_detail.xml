@@ -218,7 +218,6 @@
                         android:id="@+id/funs_number"
                         android:layout_toEndOf="@+id/funs_text"
                         android:layout_alignTop="@+id/funs_img"
-                        android:text="19"
                         android:layout_marginStart="10dp"
                         android:textSize="14sp"
                         android:textColor="#000000">
@@ -228,7 +227,7 @@
                         android:layout_height="30dp"
                         android:layout_below="@+id/funs_text"
                         android:id="@+id/subscribe_button"
-                        android:text="+关注"
+                        android:text="+ 关注"
                         android:textSize="14sp"
                         android:background="@drawable/subscribe_button_shape"
                         android:gravity="center"
@@ -310,9 +309,41 @@
                 android:layout_height="wrap_content"
                 android:text="主办方"
                 android:textColor="#7cba59"
+                android:id="@+id/detail_activity_sponsor_text"
                 android:layout_alignBottom="@+id/detail_activity_enroll_button"
                 android:textSize="11sp"
                 android:layout_alignStart="@+id/activity_detail_sponsor">
+        </TextView>
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/activity_detail_card"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="3dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="0dp"
+                android:layout_alignTop="@+id/activity_detail_sponsor"
+                android:layout_toEndOf="@+id/activity_detail_sponsor">
+            <ImageView android:layout_width="23dp"
+                       android:layout_height="23dp"
+                       android:layout_gravity="center"
+                       android:src="@drawable/collection_before"
+                       android:id="@+id/activity_detail_collection">
+            </ImageView>
+        </androidx.cardview.widget.CardView>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="#7cba59"
+                  android:textSize="11sp"
+                  android:gravity="center"
+                  android:layout_alignEnd="@+id/activity_detail_card"
+                  android:layout_alignStart="@+id/activity_detail_card"
+                  android:id="@+id/activity_detail_collection_text"
+                  android:layout_alignTop="@+id/detail_activity_sponsor_text"
+                  android:layout_toEndOf="@+id/detail_activity_sponsor_text">
         </TextView>
 
         <Button android:layout_width="240dp"

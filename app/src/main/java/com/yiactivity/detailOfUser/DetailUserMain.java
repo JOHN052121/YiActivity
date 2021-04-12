@@ -7,6 +7,7 @@ import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -17,11 +18,16 @@ import com.google.android.material.tabs.TabLayout;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.FragmentOrderListAdapter;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.mainScreen.searchActivity.AllActivityList;
 import com.yiactivity.mainScreen.searchActivity.SportActivityList;
 import com.yiactivity.mainScreen.searchActivity.VolunteerActivityList;
 import com.yiactivity.model.User;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +44,6 @@ public class DetailUserMain extends AppCompatActivity {
     private TextView user_collect_number;
     private ImageView back_icon;
     private int mUserId;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +69,16 @@ public class DetailUserMain extends AppCompatActivity {
             }
         });
 
-        //用户信息填充
         Intent intent = getIntent();
         mUserId = intent.getIntExtra("user_id",0);
+
+        //用户信息填充
         getUserInfo(mUserId);
 
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new trendFragment());
+        fragments.add(new trendFragment(mUserId));
         fragments.add(new collectFragment());
-        fragments.add(new subscribeFragment());
+        fragments.add(new subscribeFragment(mUserId));
         FragmentPagerAdapter adapter = new FragmentOrderListAdapter(getSupportFragmentManager(),fragments, new String[]{"动态", "收藏", "关注主办方"});
         viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapter);
@@ -109,6 +115,12 @@ public class DetailUserMain extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserInfo(mUserId);
+    }
+
     private void init(){
         tabLayout = findViewById(R.id.detail_user_tabLayout);
         viewPager = findViewById(R.id.detail_user_viewPager);
@@ -122,26 +134,60 @@ public class DetailUserMain extends AppCompatActivity {
         back_icon = findViewById(R.id.detail_user_back);
     }
 
-    private void getUserInfo(final int userId){
-        new Thread(new Runnable() {
+    private void getUserInfo(final int userId) {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new FormBody.Builder()
+                .add("userId",String.valueOf(userId))
+                .build();
+        Request request = new Request.Builder()
+                .url(IpAddress.URL + "user/getUserById")
+                .post(requestBody)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                user = DBOperation.getUserInfo(userId);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.with(DetailUserMain.this).load(user.getImage()).into(user_img);
-                        user_name.setText(user.getUserName());
-                        user_name_title.setText(user.getUserName());
-                        if(user.getSign() == null ){
-                            user_sign.setText("签名: 这个人很懒");
-                        }
-                        else {
-                            user_sign.setText(user.getSign());
-                        }
-                    }
-                });
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Toast.makeText(DetailUserMain.this,"连接失败，请检查网络",Toast.LENGTH_SHORT).show();
             }
-        }).start();
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                try{
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    final User user = new User();
+                    user.setUserId(jsonObject.getInt("userId"));
+                    user.setUserName(jsonObject.getString("userName"));
+                    user.setPhoneNum(jsonObject.getString("phoneNum"));
+                    user.setGender(jsonObject.getString("gender"));
+                    user.setUniversity(jsonObject.getString("university"));
+                    user.setEmail(jsonObject.getString("email"));
+                    user.setUserImage(jsonObject.getString("image"));
+                    user.setSubscribeNum(jsonObject.getInt("subscribeNum"));
+                    user.setCollectionNum(jsonObject.getInt("collectionNum"));
+                    user.setTrendNum(jsonObject.getInt("trendNum"));
+                    user.setPassword(jsonObject.getString("password"));
+                    user.setSign(jsonObject.getString("sign"));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Glide.with(DetailUserMain.this).load(IpAddress.URL_PIC+"userImage/"+user.getUserImage()).into(user_img);
+                            user_name.setText(user.getUserName());
+                            user_name_title.setText(user.getUserName());
+                            if (user.getSign().equals("nothing")) {
+                                user_sign.setText("签名: 这个人很懒");
+                            } else {
+                                user_sign.setText(user.getSign());
+                            }
+                            user_collect_number.setText(String.valueOf(user.getCollectionNum()));
+                            user_trend_number.setText(String.valueOf(user.getTrendNum()));
+                            user_subscribe_number.setText(String.valueOf(user.getSubscribeNum()));
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
+
 }

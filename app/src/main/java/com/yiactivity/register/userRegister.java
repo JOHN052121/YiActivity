@@ -44,7 +44,7 @@ public class userRegister extends AppCompatActivity implements registerContract.
     private Button choose_image_fromAlbum;
     private ImageView user_register_image;
     public static final int CHOOSE_PHOTO = 2;
-    byte[] user_register_image_string;
+    private String user_register_image_string;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +85,6 @@ public class userRegister extends AppCompatActivity implements registerContract.
         user_registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = ((BitmapDrawable)user_register_image.getDrawable()).getBitmap();
-                user_register_image_string = ImageToDB.bitmaoToString(bitmap);
                 progressBar.setVisibility(View.VISIBLE);
                 gender_radioButton = findViewById(gender_radioGroup.getCheckedRadioButtonId());
                 final User user = new User();
@@ -94,16 +92,15 @@ public class userRegister extends AppCompatActivity implements registerContract.
                 user.setUniversity(user_university.getText().toString());
                 user.setPhoneNum(user_phoneNum.getText().toString());
                 user.setPassword(user_password.getText().toString());
-                user.setImage(user_register_image_string);
+                user.setUserImage(user_register_image_string);
                 user.setPoint(0);
                 user.setEmail(user_email.getText().toString());
                 user.setGender(gender_radioButton.getText().toString());
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        registerPresenter.user_register(user);
-                    }
-                }).start();
+                user.setCollectionNum(0);
+                user.setTrendNum(0);
+                user.setSubscribeNum(0);
+                user.setSign("");
+                registerPresenter.user_register(user);
             }
         });
 
@@ -220,6 +217,7 @@ public class userRegister extends AppCompatActivity implements registerContract.
         if(imagePath !=null ){
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             user_register_image.setImageBitmap(bitmap);
+            user_register_image_string  = ImageToDB.bitmapTobyte(bitmap);
         }
         else
         {

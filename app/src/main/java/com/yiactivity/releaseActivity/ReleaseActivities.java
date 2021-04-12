@@ -1,6 +1,7 @@
 package com.yiactivity.releaseActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,8 +30,13 @@ import com.yiactivity.SponsorMain.ManagerActivity;
 import com.yiactivity.SponsorMain.SponsorMainScreen;
 import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.Activity;
 import com.yiactivity.register.userRegister;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 
 public class ReleaseActivities extends AppCompatActivity {
 
@@ -50,6 +56,9 @@ public class ReleaseActivities extends AppCompatActivity {
     private int mSponsorId;
     private ProgressBar progressBar;
     private String activity_time_from_time_choose;
+    private EditText activity_tags;
+    private String activity_tags_from_tags_choose;
+    private String poster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +119,14 @@ public class ReleaseActivities extends AppCompatActivity {
             }
         });
 
+        activity_tags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReleaseActivities.this,TagsChoose.class);
+                startActivityForResult(intent,6);
+            }
+        });
+
 
         //返回按钮监听器
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -129,20 +146,29 @@ public class ReleaseActivities extends AppCompatActivity {
                 bulider.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //将信息填入实体
-                        activity.setAddress(activity_address.getText().toString());
-                        activity.setActivityName(activity_name.getText().toString());
-                        activity.setPoster(ImageToDB.bitmaoToString(((BitmapDrawable)activity_image.getDrawable()).getBitmap()));
-                        activity.setAddressContent(content_edit_string);
-                        activity.setType(chose_type);
-                        activity.setState(1);
-                        activity.setTime(activity_time_from_time_choose);
-                        activity.setSponsorId(mSponsorId);
-
-                        new Thread(new Runnable() {
+                        OkHttpClient client = new OkHttpClient();
+                        RequestBody requestBody = new FormBody.Builder()
+                                .add("activityName",activity_name.getText().toString())
+                                .add("time",activity_time_from_time_choose)
+                                .add("address",activity_address.getText().toString())
+                                .add("activityContent",content_edit_string)
+                                .add("type",chose_type)
+                                .add("sponsorId",String.valueOf(mSponsorId))
+                                .add("tag",activity_tags_from_tags_choose)
+                                .add("poster",poster)
+                                .build();
+                        Request request = new Request.Builder()
+                                .url(IpAddress.URL + "activity/releaseActivity")
+                                .post(requestBody)
+                                .build();
+                        client.newCall(request).enqueue(new Callback() {
                             @Override
-                            public void run() {
-                                DBOperation.releaseActivity(activity);
+                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                Toast.makeText(ReleaseActivities.this,"连接失败，请检查网络！",Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -152,7 +178,7 @@ public class ReleaseActivities extends AppCompatActivity {
                                 });
                                 finish();
                             }
-                        }).start();
+                        });
                     }
                 });
                 bulider.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -178,6 +204,7 @@ public class ReleaseActivities extends AppCompatActivity {
         activity_type = findViewById(R.id.release_activity_type);
         release_button = findViewById(R.id.release_activity_button);
         progressBar = findViewById(R.id.release_progressbar);
+        activity_tags = findViewById(R.id.release_activity_tags);
     }
 
     private void openAlbum(){
@@ -226,6 +253,14 @@ public class ReleaseActivities extends AppCompatActivity {
                     activity_time.setText(activity_time_from_time_choose);
                     activity_time.setTextColor(Color.parseColor("#7cba59"));
                 }
+                break;
+            case 6:
+                if(resultCode == RESULT_OK){
+                    activity_tags_from_tags_choose = data.getStringExtra("choose_tags");
+                    activity_tags.setText("已完善");
+                    activity_tags.setTextColor(Color.parseColor("#7cba59"));
+                }
+                break;
             default:
                 break;
         }
@@ -272,6 +307,7 @@ public class ReleaseActivities extends AppCompatActivity {
         if(imagePath !=null ){
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             activity_image.setImageBitmap(bitmap);
+            poster = ImageToDB.bitmapTobyte(bitmap);
         }
         else
         {

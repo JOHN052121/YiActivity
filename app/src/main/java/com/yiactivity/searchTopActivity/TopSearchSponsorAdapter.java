@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.detailOfSponsor.SponsorDetail;
 import com.yiactivity.model.Sponsor;
 import org.w3c.dom.Text;
@@ -80,7 +81,7 @@ public class TopSearchSponsorAdapter extends RecyclerView.Adapter<TopSearchSpons
         Sponsor sponsor = mArrayList.get(position);
         holder.Org_introduce.setText(sponsor.getSponsorIntro());
         holder.Org_Name.setText(sponsor.getOrg_Name());
-        Glide.with(mContext).load(sponsor.getSponsorImage()).into(holder.sponsor_Img);
+        Glide.with(mContext).load(IpAddress.URL_PIC +"sponsorImage/"+sponsor.getSponsorImage1()).into(holder.sponsor_Img);
     }
 
     @Override

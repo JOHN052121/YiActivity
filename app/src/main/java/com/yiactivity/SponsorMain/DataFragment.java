@@ -1,7 +1,6 @@
 package com.yiactivity.SponsorMain;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,29 +17,23 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.yiactivity.R;
-import com.yiactivity.Utils.BrowserCount;
+import com.yiactivity.model.Activity;
 import com.yiactivity.Utils.DBOperation;
 
 public class DataFragment extends Fragment {
 
     private int mSponsorId;
     private ImageView imageView;
-    private int mActivityId;
-    private String mActivityName;
-    private String mActivityTime;
-    private String mActivityAddress;
     private TextView activity_name;
     private TextView activity_address;
     private TextView activity_time;
     private TextView enrolled_number;
     private TextView browser_count;
+    private Activity mActivity;
 
-    public DataFragment(int sponsorId,int activityId,String activityAddress,String activityName,String activityTime){
+    public DataFragment(int sponsorId, Activity activity){
         mSponsorId = sponsorId;
-        mActivityId = activityId;
-        mActivityAddress = activityAddress;
-        mActivityTime = activityTime;
-        mActivityName = activityName;
+        mActivity = activity;
     }
     @Nullable
     @Override
@@ -53,9 +46,11 @@ public class DataFragment extends Fragment {
         browser_count = view.findViewById(R.id.data_fragment_browser_number);
 
 
-        activity_time.setText(mActivityTime);
-        activity_name.setText(mActivityName);
-        activity_address.setText(mActivityAddress);
+        activity_time.setText(mActivity.getTime());
+        activity_name.setText(mActivity.getActivityName());
+        activity_address.setText(mActivity.getAddress());
+        enrolled_number.setText(String.valueOf(mActivity.getParticipant()));
+        browser_count.setText(String.valueOf(mActivity.getBrowserCount()));
 
         //返回按钮监听键
         imageView = view.findViewById(R.id.data_fragment_back);
@@ -65,17 +60,6 @@ public class DataFragment extends Fragment {
                 getActivity().finish();
             }
         });
-
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(getActivity());
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("getEnrollNum");
-        BroadcastReceiver br = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                enrolled_number.setText(String.valueOf(intent.getIntExtra("enrolled_number",0)));
-            }
-        };
-        localBroadcastManager.registerReceiver(br,intentFilter);
         return view;
     }
 
@@ -83,20 +67,6 @@ public class DataFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final int count = DBOperation.getBrowserCount(mActivityId);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        browser_count.setText(String.valueOf(count));
-                    }
-                });
-            }
-        }).start();
-
-
     }
 
     @Override

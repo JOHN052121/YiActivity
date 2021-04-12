@@ -28,8 +28,13 @@ import androidx.core.content.ContextCompat;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.Trend;
 import com.yiactivity.register.userRegister;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 
 public class ReleaseTrend extends AppCompatActivity {
 
@@ -40,7 +45,7 @@ public class ReleaseTrend extends AppCompatActivity {
     private final static int CHOOSE_PHOTO = 2;
     private LinearLayout linearLayout;
     private int mUserId;
-    private Trend newTrend = new Trend();
+    private String image_string = "noimage";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,22 +92,38 @@ public class ReleaseTrend extends AppCompatActivity {
                 builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        newTrend.setContent(release_content.getText().toString());
-                        newTrend.setImage(ImageToDB.bitmaoToString(((BitmapDrawable)add_img.getDrawable()).getBitmap()));
-                        newTrend.setUserId(mUserId);
-                        new Thread(new Runnable() {
+                        OkHttpClient client = new OkHttpClient();
+                        RequestBody requestBody = new FormBody.Builder()
+                                .add("userId",String.valueOf(mUserId))
+                                .add("content",release_content.getText().toString())
+                                .add("image",image_string)
+                                .build();
+                        Request request = new Request.Builder()
+                                .url(IpAddress.URL +"trend/releaseTrend")
+                                .post(requestBody)
+                                .build();
+                        client.newCall(request).enqueue(new Callback() {
                             @Override
-                            public void run() {
-                                DBOperation.releaseTrend(newTrend);
+                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(ReleaseTrend.this, "发布成功", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ReleaseTrend.this,"连接失败，请检查网络！",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+                            @Override
+                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(ReleaseTrend.this,"发布成功！",Toast.LENGTH_SHORT).show();
                                         finish();
                                     }
                                 });
                             }
-                        }).start();
+                        });
                     }
                 });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -197,6 +218,7 @@ public class ReleaseTrend extends AppCompatActivity {
         if(imagePath !=null ){
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             add_img.setImageBitmap(bitmap);
+            image_string = ImageToDB.bitmapTobyte(bitmap);
         }
         else
         {

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.Activity;
 
 import java.util.ArrayList;
@@ -61,10 +62,7 @@ public class MangerActivityAdapter extends RecyclerView.Adapter<MangerActivityAd
                 Activity activity = mActivityList.get(position);
                 Intent intent = new Intent(mContext, MangerActivityInDetail.class);
                 intent.putExtra("sponsorId",mSponsorId);
-                intent.putExtra("activityName",activity.getActivityName());
-                intent.putExtra("activityAddress",activity.getAddress());
-                intent.putExtra("activityTime",activity.getTime());
-                intent.putExtra("activityId",activity.getActivityId());
+                intent.putExtra("activity_data",activity);
                 mContext.startActivity(intent);
             }
         });
@@ -75,7 +73,7 @@ public class MangerActivityAdapter extends RecyclerView.Adapter<MangerActivityAd
     public void onBindViewHolder(@NonNull MangerActivityAdapter.ViewHolder holder, int position) {
         Activity activity = mActivityList.get(position);
         holder.activityName.setText(activity.getActivityName());
-        Glide.with(mContext).load(activity.getPoster()).into(holder.activityPoster);
+        Glide.with(mContext).load(IpAddress.URL_PIC + "activityPoster/" + activity.getPoster2()).into(holder.activityPoster);
         holder.activityType.setText(activity.getType().substring(0,4));
         holder.activityTime.setText(activity.getTime());
     }

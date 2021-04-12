@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import com.next.easynavigation.view.EasyNavigationBar;
 import com.yiactivity.R;
+import com.yiactivity.model.Sponsor;
 import com.yiactivity.releaseActivity.ReleaseActivities;
 
 import java.util.ArrayList;
@@ -16,12 +17,12 @@ import java.util.List;
 
 public class SponsorMainScreen extends AppCompatActivity {
 
-    private int mSponsorId;
     private EasyNavigationBar easyNavigationBar;
     private String[] tabText = {"活动管理","发布活动","我的"};
     private int[] normalIcon ={R.drawable.manager,R.drawable.add_activity,R.drawable.myinfo} ;
     private int[] selectIcon ={R.drawable.manager_choosed,R.drawable.add_activity,R.drawable.user_buttoned} ;
     private List<Fragment> fragments = new ArrayList<>();
+    private Sponsor sponsor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +38,13 @@ public class SponsorMainScreen extends AppCompatActivity {
         }
 
 
-        //获取传过来的sponsorId
+        //获取传过来的sponsor对象
         Intent intent = getIntent();
-        mSponsorId = intent.getIntExtra("sponsor_id",0);
+        sponsor = (Sponsor) intent.getSerializableExtra("sponsor_data");
 
-        System.out.println(mSponsorId);
         //将管理活动和我的两个fragment加入fragment列表
-        fragments.add(new ManagerActivity(mSponsorId));
-        fragments.add(new SponsorMyInfo(mSponsorId));
+        fragments.add(new ManagerActivity(sponsor.getSponsorId()));
+        fragments.add(new SponsorMyInfo(sponsor));
 
         //设置底部导航栏easyNavigationBar
         easyNavigationBar = findViewById(R.id.Sponsor_main_EasyNavigationBar);
@@ -57,7 +57,7 @@ public class SponsorMainScreen extends AppCompatActivity {
                     public boolean onTabSelectEvent(View view, int position) {
                         if (position == 1){
                             Intent intent = new Intent(SponsorMainScreen.this,ReleaseActivities.class);
-                            intent.putExtra("sponsor_id",mSponsorId);
+                            intent.putExtra("sponsor_id",sponsor.getSponsorId());
                             startActivity(intent);
                             return true;
                         }

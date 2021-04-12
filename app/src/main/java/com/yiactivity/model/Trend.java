@@ -10,15 +10,23 @@ public class Trend {
 
     private String userName;
 
-    private byte[] image;
+    private String image;
 
-    private byte[] userImg;
+    private String userImg;
 
-    public byte[] getUserImg() {
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getUserImg() {
         return userImg;
     }
 
-    public void setUserImg(byte[] userImg) {
+    public void setUserImg(String userImg) {
         this.userImg = userImg;
     }
 
@@ -36,14 +44,6 @@ public class Trend {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public int getId() {

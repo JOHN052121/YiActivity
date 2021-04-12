@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.User;
 import java.util.ArrayList;
 
@@ -63,9 +64,8 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
                 int position = holder.getAdapterPosition();
                 User user = mUserArrayList.get(position);
                 Intent intent = new Intent(mContext,ParticipantDetail.class);
-                intent.putExtra("user_id",user.getUserId());
+                intent.putExtra("user_data",user);
                 intent.putExtra("activity_id",mActivityId);
-                intent.putExtra("user_statement",user.getStatement());
                 mContext.startActivity(intent);
             }
         });
@@ -76,7 +76,7 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User user = mUserArrayList.get(position);
-        Glide.with(mContext).load(user.getImage()).into(holder.participantImage);
+        Glide.with(mContext).load( IpAddress.URL_PIC + "userImage/" + user.getUserImage()).into(holder.participantImage);
         holder.participantName.setText(user.getUserName());
         holder.participantPhone.setText(user.getPhoneNum());
         switch (user.getStatement()){

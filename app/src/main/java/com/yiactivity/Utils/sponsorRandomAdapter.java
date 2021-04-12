@@ -2,6 +2,7 @@ package com.yiactivity.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,8 @@ public class sponsorRandomAdapter extends RecyclerView.Adapter<sponsorRandomAdap
                 Sponsor sponsor =  mSponsorList.get(position);
                 Intent intent = new Intent(mContext, SponsorDetail.class);
                 intent.putExtra("sponsor_id",sponsor.getSponsorId());
-                intent.putExtra("user_id",mUserId);
+                intent.putExtra("userId",mUserId);
+                System.out.println(mUserId);
                 mContext.startActivity(intent);
             }
         });
@@ -70,7 +72,7 @@ public class sponsorRandomAdapter extends RecyclerView.Adapter<sponsorRandomAdap
     public void onBindViewHolder(@NonNull sponsorRandomAdapter.ViewHolder holder, int position) {
         Sponsor sponsor = mSponsorList.get(position);
         holder.sponsorName.setText(sponsor.getOrg_Name());
-        Glide.with(mContext).load(sponsor.getSponsorImage()).into(holder.sponsorImage);
+        Glide.with(mContext).load("http://192.168.1.111:8080/SSM_war_exploded/asset/sponsorImage/" + sponsor.getSponsorImage1()).into(holder.sponsorImage);
     }
 
     @Override

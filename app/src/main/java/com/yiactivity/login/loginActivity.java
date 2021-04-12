@@ -72,34 +72,25 @@ public class loginActivity extends AppCompatActivity implements loginContract.Vi
                 password = passwordEdit.getText().toString();
                 progressBar.setVisibility(View.VISIBLE);
                 if(choose.getCheckedRadioButtonId() == loginAsUser.getId()) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            user = loginPresenter.LoginAsUser(userPhone, password);
-                        }
-                    }).start();
+                    loginPresenter.LoginAsUser(userPhone,password);
                 }
                 else if(choose.getCheckedRadioButtonId() == loginAsSponsor.getId()){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            sponsor = loginPresenter.LoginAsSponsor(userPhone,password);
-                        }
-                    }).start();
+                    loginPresenter.LoginAsSponsor(userPhone,password);
                 }
             }
         });
     }
 
     @Override
-    public void loginSuccess() {
+    public void loginSuccess(final User user) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(loginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(loginActivity.this, MainActivity.class);
-                intent.putExtra("user_id",user.getUserId());
+                Log.d("调试",user.getUserName());
+                intent.putExtra("user_data",user);
                 startActivity(intent);
             }
         });
@@ -117,14 +108,14 @@ public class loginActivity extends AppCompatActivity implements loginContract.Vi
     }
 
     @Override
-    public void loginSuccessAsSponsor() {
+    public void loginSuccessAsSponsor(final Sponsor sponsor) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(loginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(loginActivity.this, SponsorMainScreen.class);
-                intent.putExtra("sponsor_id",sponsor.getSponsorId());
+                intent.putExtra("sponsor_data",sponsor);
                 startActivity(intent);
             }
         });

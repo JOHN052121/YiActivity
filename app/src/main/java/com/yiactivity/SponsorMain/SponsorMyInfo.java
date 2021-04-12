@@ -16,18 +16,20 @@ import com.bumptech.glide.Glide;
 import com.yiactivity.R;
 import com.yiactivity.Utils.DBOperation;
 import com.yiactivity.Utils.ImageToDB;
+import com.yiactivity.Utils.IpAddress;
 import com.yiactivity.model.Sponsor;
+
+import java.net.URL;
 
 public class SponsorMyInfo extends Fragment {
 
     private Button exit_button;
     private ImageView sponsor_image;
     private TextView sponsor_name;
-    private int mSponsorId;
-    private Sponsor sponsor;
+    private Sponsor mSponsor;
 
-    public SponsorMyInfo(int sponsorId){
-        mSponsorId = sponsorId;
+    public SponsorMyInfo(Sponsor sponsor){
+        mSponsor = sponsor;
     }
 
 
@@ -57,22 +59,11 @@ public class SponsorMyInfo extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getSponsorInfo(mSponsorId);
+        getSponsorInfo(mSponsor);
     }
 
-    private void getSponsorInfo(final int sponsorId){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sponsor = DBOperation.getSponsorDetailById(sponsorId);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.with(SponsorMyInfo.this).load(sponsor.getSponsorImage()).into(sponsor_image);
-                        sponsor_name.setText(sponsor.getOrg_Name());
-                    }
-                });
-            }
-        }).start();
+    private void getSponsorInfo(final Sponsor sponsor){
+        Glide.with(SponsorMyInfo.this).load(IpAddress.URL_PIC+"sponsorImage/"+sponsor.getSponsorImage1()).into(sponsor_image);
+        sponsor_name.setText(sponsor.getOrg_Name());
     }
 }

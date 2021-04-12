@@ -2,7 +2,9 @@ package com.yiactivity.model;
 
 import android.media.Image;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private int userId;
     private String userName;
@@ -15,6 +17,42 @@ public class User {
     private byte[] image;
     private int statement;
     private String sign;
+    private String userImage;
+    private int subscribeNum;
+    private int trendNum;
+    private int collectionNum;
+
+    public int getSubscribeNum() {
+        return subscribeNum;
+    }
+
+    public void setSubscribeNum(int subscribeNum) {
+        this.subscribeNum = subscribeNum;
+    }
+
+    public int getTrendNum() {
+        return trendNum;
+    }
+
+    public void setTrendNum(int trendNum) {
+        this.trendNum = trendNum;
+    }
+
+    public int getCollectionNum() {
+        return collectionNum;
+    }
+
+    public void setCollectionNum(int collectionNum) {
+        this.collectionNum = collectionNum;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
+    }
 
     public String getSign() {
         return sign;

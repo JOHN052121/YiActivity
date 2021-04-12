@@ -36,8 +36,8 @@
                 android:layout_height="match_parent">
 
             <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
                     android:layout_marginTop="10dp"
                     android:id="@+id/detail_sponsor_image"
                     android:layout_centerHorizontal="true">
@@ -53,6 +53,70 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/detail_sponsor_image">
             </TextView>
+
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textSize="12sp"
+                      android:textColor="#000000"
+                      android:id="@+id/sponsor_detail_funs"
+                      android:layout_marginEnd="5dp"
+                      android:layout_toStartOf="@+id/sponsor_detail_funs_text"
+                      android:layout_alignTop="@+id/sponsor_detail_funs_text">
+            </TextView>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="粉丝"
+                    android:layout_marginTop="9dp"
+                    android:textSize="12sp"
+                    android:layout_toStartOf="@+id/sponsor_detail_line"
+                    android:layout_marginEnd="10dp"
+                    android:id="@+id/sponsor_detail_funs_text"
+                    android:layout_below="@+id/detail_sponsor_name">
+            </TextView>
+
+            <View android:layout_width="1px"
+                  android:layout_height="35px"
+                  android:background="#8a8a8a"
+                  android:id="@+id/sponsor_detail_line"
+                  android:layout_marginTop="10dp"
+                  android:layout_below="@+id/detail_sponsor_name"
+                  android:layout_centerHorizontal="true">
+            </View>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:id="@+id/sponsor_detail_activity"
+                    android:layout_alignTop="@+id/sponsor_detail_activity_text"
+                    android:layout_toEndOf="@+id/sponsor_detail_activity_text"
+                    android:layout_marginStart="5dp">
+            </TextView>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="活动"
+                    android:textSize="12sp"
+                    android:layout_toEndOf="@+id/sponsor_detail_line"
+                    android:layout_marginStart="10dp"
+                    android:id="@+id/sponsor_detail_activity_text"
+                    android:layout_alignTop="@+id/sponsor_detail_funs_text">
+            </TextView>
+
+            <Button android:layout_width="70dp"
+                    android:layout_height="25dp"
+                    android:text="+ 关注"
+                    android:background="@drawable/subscribe_button_shape"
+                    android:stateListAnimator="@null"
+                    android:textColor="#2aa515"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/sponsor_detail_subscribe_button"
+                    android:layout_below="@id/sponsor_detail_funs_text"
+                    android:layout_centerHorizontal="true">
+            </Button>
+
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,7 +124,7 @@
                     android:text="主办方介绍"
                     android:textSize="15sp"
                     android:id="@+id/introduce_title"
-                    android:layout_below="@+id/detail_sponsor_name">
+                    android:layout_below="@+id/sponsor_detail_subscribe_button">
             </TextView>
             <View
                     android:layout_width="match_parent"

@@ -61,15 +61,10 @@ public class Search_all_activityAdapter extends RecyclerView.Adapter<Search_all_
                 public void onClick(View v) {
                     int position = holder.getAdapterPosition();
                     final Activity activity = mActivityList.get(position);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            DBOperation.updateBrowserCount(mUserId, activity.getActivityId());
-                        }
-                    }).start();
+                    ActivityAdapter.updateBrowserCount(activity.getActivityId());
                     Intent intent = new Intent(mContext, ActivityDetail.class);
                     intent.putExtra("userId", mUserId);
-                    intent.putExtra("activityId", activity.getActivityId());
+                    intent.putExtra("activity_data", activity);
                     mContext.startActivity(intent);
                 }
             });
@@ -80,7 +75,7 @@ public class Search_all_activityAdapter extends RecyclerView.Adapter<Search_all_
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Activity activity = mActivityList.get(position);
         holder.activityName.setText(activity.getActivityName());
-        Glide.with(mContext).load(activity.getPoster()).into(holder.activityPoster);
+        Glide.with(mContext).load(IpAddress.URL_PIC+"activityPoster/" + activity.getPoster2()).into(holder.activityPoster);
         holder.activityType.setText(activity.getType().substring(0,4));
         holder.activityTime.setText(activity.getTime());
     }
